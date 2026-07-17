@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>__CONCEPT__ — Deck</title>
+
+<!-- Reveal.js core layout (CDN). For an OFFLINE deck, vendor these files locally and swap the paths. -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css" />
+
+<style>
+  /* ============================================================
+     BRAND FONTS (optional, recommended for a brand launch deck)
+     ------------------------------------------------------------
+     If this deck is for a brand (Coinbase, etc.), embed the brand's
+     REAL web fonts as base64 @font-face so the file stays self-contained
+     and portable, then point --font / --mono at them below.
+
+     • VERIFY authenticity first — check the WOFF2 magic bytes (`wOF2`)
+       and the official file naming; don't trust a random "brand" font.
+     • Embed with:  base64 -i Font.woff2  → data:font/woff2;base64,<blob>
+     • Only load the WEIGHTS YOU USE (e.g. 400/500/700). Then only ever
+       write those weights in CSS. Values like 550/650/750 map to the
+       nearest loaded face (often 700), which silently over-bolds pills,
+       steps, and captions. Weight discipline avoids that whole class of bug.
+
+     @font-face { font-family:"Brand Sans"; font-weight:400; font-display:swap;
+                  src:url(data:font/woff2;base64,__BASE64__) format("woff2"); }
+     @font-face { font-family:"Brand Sans"; font-weight:500; ... }
+     @font-face { font-family:"Brand Sans"; font-weight:700; ... }
+     @font-face { font-family:"Brand Mono"; font-weight:400; ... }
+     ============================================================ */
+
+  /* ============================================================
+     DESIGN SYSTEM  —  richer than minimal, still disciplined.
+     Change --accent (one hue) and the theme class on <body>.
+     ============================================================ */
+  :root {
+    --bg:        #fbfbfd;
+    --ink:       #0b0b0f;
+    --muted:     #6b6b76;
+    --line:      #e7e7ee;
+    --card:      #ffffff;
+    --dim:       #a6a6b0;                 /* "before" code — intentionally faded */
+    --cmt:       #c4c4ce;                 /* code comments */
+    --accent:    #0052ff;                 /* the ONE accent hue (Base blue default) */
+    --accent-2:  #4c8bff;                 /* lighter tint of the SAME hue, for the one gradient */
+    --accent-soft: rgba(0, 82, 255, 0.08);
+    --shadow:    0 1px 2px rgba(16,18,40,.05), 0 12px 34px rgba(16,18,40,.08);
+    --shadow-lg: 0 2px 4px rgba(16,18,40,.06), 0 24px 60px rgba(16,18,40,.14);
+    --radius:    22px;
+    /* Prepend the brand family if embedded above, e.g. "Coinbase Sans", ... */
+    --font:      -apple-system, "SF Pro Display", "Inter", system-ui, sans-serif;
+    --mono:      "SF Mono", "JetBrains Mono", ui-monospace, monospace;
+  }
+  /* Dark theme: add class="dark" to <body> */
+  body.dark {
+    --bg: #0a0a0f; --ink: #f4f4f8; --muted: #9a9aa8; --line: #23232e;
+    --card: #14141c; --dim: #5a5a66; --cmt: #4a4a56; --accent-soft: rgba(76,139,255,.12);
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 34px rgba(0,0,0,.5);
+    --shadow-lg: 0 2px 4px rgba(0,0,0,.5), 0 24px 60px rgba(0,0,0,.6);
+  }
+
+  html, body { height: 100%; }
+  .reveal { font-family: var(--font); color: var(--ink); -webkit-font-smoothing: antialiased; }
+  .reveal-viewport { background: var(--bg); }
+
+  /* --- Typography ------------------------------------------------ */
+  .reveal .kicker {                    /* eyebrow / section label — groups related slides */
+    font-size: 0.85rem; font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 1.4rem;
+  }
+  .reveal .kicker .muted { color: var(--muted); }
+  .reveal .title {
+    font-size: clamp(3rem, 8vw, 6rem); font-weight: 700;
+    letter-spacing: -0.03em; line-height: 1.02;
+  }
+  .reveal .headline {
+    font-size: clamp(2.2rem, 6vw, 4.4rem); font-weight: 650;
+    letter-spacing: -0.025em; line-height: 1.08; max-width: 20ch; margin: 0 auto;
+  }
+  /* ALIGNMENT HOOK: give the headlines of a same-type SERIES the same min-height
+     (in em) so their tops land at the same Y under Reveal's vertical centering.
+     Break lines with <br> and turn off max-width so wrapping is deterministic. */
+  .reveal .headline.hl-anchor { max-width: none; min-height: 2.5em; }
+  .reveal .sub {
+    font-size: clamp(1.05rem, 2vw, 1.5rem); color: var(--muted);
+    font-weight: 400; margin-top: 0.8em; max-width: 34ch; margin-left: auto; margin-right: auto;
+  }
+  /* Wider explanatory sub for "explainer" slides (benefits that don't demo well).
+     ALIGNMENT: set an equal min-height across the series (measure the tallest, in px)
+     so kicker + headline land in the same spot on every slide of the set. */
+  .reveal .sub.wide { max-width: 52ch; line-height: 1.45; }
+  .reveal .sub b { color: var(--ink); font-weight: 600; }
+  .reveal .accent { color: var(--accent); }
+  .reveal .grad {
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+
+  /* --- Component: cards (the "parts") — centered, solid-accent SVG icon --- */
+  .reveal .cards { display: flex; gap: clamp(16px, 2.4vw, 30px); justify-content: center; flex-wrap: wrap; }
+  .reveal .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: clamp(30px, 3.2vw, 46px);
+    width: clamp(210px, 23vw, 300px); text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: 18px;
+  }
+  .reveal .card .glyph {                 /* reversed: solid accent circle, white icon */
+    width: 66px; height: 66px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--accent); color: #fff;
+  }
+  .reveal .card .glyph svg { width: 30px; height: 30px; display: block; }  /* use SVG icons, not unicode glyphs (centering) */
+  .reveal .card .c-title { font-size: 1.3rem; font-weight: 650; letter-spacing: -0.01em; }
+  .reveal .card .c-role  { font-size: 0.98rem; color: var(--muted); line-height: 1.4; max-width: 24ch; }
+
+  /* --- Component: numbered steps (the "flow") -------------------- */
+  .reveal .steps { display: flex; flex-direction: column; gap: 22px; text-align: left; max-width: 22ch; margin: 0 auto; }
+  .reveal .step { display: flex; align-items: center; gap: 20px; font-size: clamp(1.3rem, 3vw, 2.1rem); font-weight: 500; }
+  .reveal .step .num {
+    flex: 0 0 auto; width: 2em; height: 2em; border-radius: 50%;
+    display: grid; place-items: center; font-size: 0.62em; font-weight: 700;
+    background: var(--accent); color: #fff;
+  }
+
+  /* --- Component: flow nodes (relationship / broken "before" state) --- */
+  .reveal .flow { display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; margin-top: 2.2rem; }
+  .reveal .node {
+    border: 1px solid var(--line); background: var(--card); border-radius: 999px;
+    padding: 13px 24px; font-size: clamp(0.9rem, 1.6vw, 1.15rem); font-weight: 400; box-shadow: var(--shadow);
+  }
+  .reveal .node.cap { border-color: var(--accent); color: var(--accent); }  /* the accent pill in a payoff flow */
+  .reveal .sep { color: var(--muted); font-size: 1.1rem; opacity: .6; }
+
+  /* --- Component: big metric / payoff ---------------------------- */
+  .reveal .metric { font-size: clamp(4.5rem, 15vw, 11rem); font-weight: 750; letter-spacing: -0.04em; line-height: 1; }
+
+  /* --- Component: BEFORE/AFTER code comparison (never clips) ----- */
+  .reveal .cmp {
+    display: flex; gap: clamp(16px, 2.2vw, 30px); width: 100%;
+    align-items: stretch; justify-content: center;
+    min-height: 480px;                    /* ALIGNMENT: equal on every code slide so kickers line up */
+  }
+  .reveal .pane {
+    flex: 1 1 0;
+    min-width: 0;                          /* CRITICAL: lets the flex child shrink so code can't overflow */
+    text-align: left; display: flex; flex-direction: column;
+  }
+  .reveal .pane .lab { font-size: 0.82rem; font-weight: 600; letter-spacing: .02em; color: var(--muted); margin-bottom: 10px; }
+  .reveal .pane.after .lab { color: var(--ink); }
+  .reveal .pane .lab .tag { color: var(--muted); font-weight: 500; }
+  .reveal .pane pre {
+    font-family: var(--mono);
+    font-size: 14px; line-height: 1.55;    /* fixed small size — readable, fits */
+    white-space: pre-wrap;                 /* wrap instead of clip — NO horizontal scroll, ever */
+    overflow-wrap: anywhere;
+    background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+    box-shadow: var(--shadow); padding: 18px 20px; margin: 0; flex: 1;
+  }
+  .reveal .pane.before pre { color: var(--dim); }        /* the old way, intentionally faded */
+  .reveal .pane.after  pre { color: var(--ink); }        /* the new way, full strength */
+  .reveal .pane .hl  { color: var(--accent); font-weight: 600; }   /* accent ONLY the lines that changed */
+  .reveal .pane .cmt { color: var(--cmt); }
+  .reveal .cmp-cap { margin-top: 22px; text-align: center; color: var(--muted); font-size: clamp(1.05rem, 2vw, 1.5rem); }
+  .reveal .cmp-cap b { color: var(--ink); font-weight: 600; }
+
+  /* --- Component: inline code snippet for "explainer" slides ----- */
+  .reveal .snippet {
+    display: inline-block; margin-top: 1.8rem; font-family: var(--mono);
+    font-size: clamp(0.9rem, 1.7vw, 1.2rem);
+    background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+    box-shadow: var(--shadow); padding: 16px 22px; color: var(--ink);
+  }
+  .reveal .snippet .k { color: var(--muted); }
+  .reveal .snippet .hl { color: var(--accent); }
+  .reveal .snippet .cap { display: block; margin-top: 10px; font-family: var(--font); font-size: 0.85rem; color: var(--muted); }
+
+  /* Progress bar + controls tinted to the accent */
+  .reveal .progress { color: var(--accent); height: 4px; }
+  .reveal .controls { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+  <!-- ============================================================
+       ARC (adapt to the concept — see reference/design-and-arc.md):
+       problem → turn → the parts → then, per capability, a PROMISE
+       slide (the benefit) FOLLOWED BY the before/after code, plus
+       explainer slides for benefits that don't demo well → metric → CTA.
+
+       • Benefit-FIRST: the one-line promise, THEN the code that delivers it.
+       • For a domain the audience already knows, DROP the title + any
+         "what is X" primer and cold-open on the problem.
+       • No em dashes in on-screen copy. One accent hue.
+       ============================================================ -->
+
+  <!-- (OPTIONAL) TITLE — delete for an expert audience; they hear the name from you.
+       If kept, it's the morph seed: the name shrinks into a kicker on the next slide. -->
+  <!--
+  <section data-auto-animate data-auto-animate-id="hero">
+    <div class="kicker fragment">__CATEGORY__</div>
+    <h1 class="title" data-id="hero-word">__CONCEPT_NAME__</h1>
+    <p class="sub fragment">__WHAT_IT_IS_IN_4_TO_6_WORDS__</p>
+  </section>
+  -->
+
+  <!-- 1 · PROBLEM (cold open, no kicker). Lead with the pain; respect the primitive
+       you build on (e.g. "X is a great building block. But you lay every brick yourself."). -->
+  <section>
+    <div class="headline hl-anchor">__RESPECT_THE_PRIMITIVE__.<br>__NAME_THE_FRICTION__.</div>
+    <div class="flow">
+      <span class="node">__PAIN_1__</span>
+      <span class="node">__PAIN_2__</span>
+      <span class="node">__PAIN_3__</span>
+    </div>
+    <aside class="notes">Lead with the pain. People care once they feel it. Pills are static + regular weight.</aside>
+  </section>
+
+  <!-- 2 · THE TURN (accent on the product NAME; it's the morph seed).
+       Keep the data-id text IDENTICAL to the kicker on slide 3 so the morph is clean. -->
+  <section data-auto-animate data-auto-animate-id="hero">
+    <div class="headline hl-anchor"><span class="accent" data-id="hero-word">__NAME__</span> __DOES_THE_THING__.<br>__SHORT_SECOND_LINE__.</div>
+    <aside class="notes">The turn — answer the pain head-on. Beat before the accent phrase.</aside>
+  </section>
+
+  <!-- 3 · THE PARTS ("__NAME__ gives you") — SIGNATURE MORPH: the accent name
+       shrinks from the slide-2 headline into this kicker (same data-id, same text, same accent). -->
+  <section data-auto-animate data-auto-animate-id="hero">
+    <div class="kicker"><span data-id="hero-word">__NAME__</span> <span class="muted">gives you</span></div>
+    <div class="cards">
+      <div class="card fragment fade-up"><div class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- icon path (Feather-style line icon) --></svg></div><div class="c-title">__PART_1__</div><div class="c-role">__ROLE_1__</div></div>
+      <div class="card fragment fade-up"><div class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- icon path --></svg></div><div class="c-title">__PART_2__</div><div class="c-role">__ROLE_2__</div></div>
+      <div class="card fragment fade-up"><div class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- icon path --></svg></div><div class="c-title">__PART_3__</div><div class="c-role">__ROLE_3__</div></div>
+    </div>
+    <aside class="notes">Name each part precisely. Use meaningful SVG icons (e.g. key = keys/wallet, ≤ = cap, pen = sign).</aside>
+  </section>
+
+  <!-- 4 · PROMISE (benefit-first: the one-line payoff BEFORE the code) -->
+  <section>
+    <div class="headline">__THE_PROMISE__ <span class="accent">__KEYWORD__</span>.</div>
+    <div class="flow">
+      <span class="node cap">__MECHANISM__</span>
+      <span class="sep">→</span>
+      <span class="node">__OUTCOME__</span>
+    </div>
+    <aside class="notes">State the benefit, then the next slide shows the code that delivers it.</aside>
+  </section>
+
+  <!-- 5 · BEFORE/AFTER CODE — both panes shown together (no fade). Before dim, After ink+accent.
+       Wrap long import lines by hand; the CSS guarantees no horizontal scroll regardless. -->
+  <section>
+    <div class="kicker">__SECTION_LABEL__ — <span class="muted">__WHAT_THIS_SHOWS__</span></div>
+    <div class="cmp">
+      <div class="pane before">
+        <div class="lab">Before <span class="tag">· __OLD_WAY__</span></div>
+<pre>__the old way, several lines__
+__wrap long lines by hand__
+  __like this__;</pre>
+      </div>
+      <div class="pane after">
+        <div class="lab">After <span class="tag">· __NEW_WAY__</span></div>
+<pre><span class="hl">__the one line that matters__</span>
+<span class="cmt">// what it handled for you</span></pre>
+      </div>
+    </div>
+    <div class="cmp-cap">__before_count__ → <b><span class="accent">__after_count__</span>.</b></div>
+    <aside class="notes">Slow down; let the eye see long-and-faded vs short-and-accent before you finish the line.</aside>
+  </section>
+
+  <!-- 6 · EXPLAINER (for a benefit that doesn't demo well: headline + a real sentence or two + minimal code).
+       Give .sub.wide an equal min-height across a SERIES of these so kicker+title align on every one. -->
+  <section>
+    <div class="kicker">__SECTION_LABEL__</div>
+    <div class="headline">__THE_BENEFIT_HEADLINE__.</div>
+    <p class="sub wide">__One or two plain sentences on WHY it matters — the mechanism, in words. Bold the__ <b>__key term__</b> __. Accurate over punchy.__</p>
+    <div class="snippet"><span class="k">__real_config:__</span> { <span class="hl">__the_relevant_bit__</span> }<span class="cap">__what this line does for you__</span></div>
+    <aside class="notes">These carry a real sentence (not ≤8 words). Put honesty caveats — what to verify, SDK vs platform — here in the notes.</aside>
+  </section>
+
+  <!-- 7 · METRIC (the one gradient of the deck, on one number) -->
+  <section>
+    <div class="metric grad">__BIG_NUMBER__</div>
+    <p class="sub">__WHAT_IT_MEANS__ (soften an internal stat for a public cut unless you can cite it).</p>
+  </section>
+
+  <!-- 8 · CTA -->
+  <section>
+    <div class="headline">__THE_ONE_LINE_PAYOFF__.</div>
+    <pre class="snippet"><span class="k">import</span> { __Thing__ } <span class="k">from</span> "<span class="accent">__package__</span>"</pre>
+    <aside class="notes">One line: what they do next. Go build.</aside>
+  </section>
+
+</div></div>
+
+<!-- Reveal.js runtime + notes plugin (CDN). Vendor locally for offline use.
+     NOTE: no syntax-highlight plugin — before/after panes use custom styling to keep the ONE-accent rule
+     (a rainbow highlight theme would break it). Add RevealHighlight only for a standalone JSON payoff. -->
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/notes/notes.js"></script>
+<script>
+  Reveal.initialize({
+    width: 1280,                 // wider canvas → code panes get room, lines don't wrap
+    height: 720,
+    margin: 0.045,
+    hash: true,
+    center: true,
+    controls: true,
+    progress: true,
+    slideNumber: 'c/t',
+    transition: 'fade',          // slide-to-slide default; auto-animate overrides where declared
+    transitionSpeed: 'default',
+    autoAnimateEasing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+    autoAnimateDuration: 0.7,
+    autoAnimateUnmatched: true,
+    plugins: [RevealNotes],
+  });
+</script>
+</body>
+</html>
