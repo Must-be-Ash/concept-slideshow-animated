@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Agentic Finance · Solana Intelligent Summit</title>
+<link rel="stylesheet" href="vendor/reveal.css" />
+<style>
+
+  :root {
+    --bg: #fbfbfd; --ink: #0b0b0f; --muted: #6b6b76; --line: #e7e7ee; --card: #ffffff;
+    --accent: #0052ff; --accent-2: #4c8bff; --accent-soft: rgba(0,82,255,.08);
+    --shadow: 0 1px 2px rgba(16,18,40,.05), 0 12px 34px rgba(16,18,40,.08);
+    --shadow-lg: 0 2px 4px rgba(16,18,40,.06), 0 24px 60px rgba(16,18,40,.14);
+    --radius: 22px;
+    --font: "Coinbase Sans", -apple-system, "SF Pro Display", Inter, system-ui, sans-serif;
+    --mono: "Coinbase Mono", "SF Mono", ui-monospace, monospace;
+    --ease: cubic-bezier(.22,1,.36,1);
+  }
+  html, body { height: 100%; }
+  .reveal { font-family: var(--font); color: var(--ink); -webkit-font-smoothing: antialiased; font-size: 28px; }
+  .reveal-viewport { background: var(--bg); }
+  .reveal .progress { color: var(--accent); height: 4px; }
+  .reveal .controls { color: var(--accent); }
+
+  /* type */
+  .kicker { font-size: .56rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.1rem; }
+  .kicker .muted, .headline .muted { color: var(--muted); }
+  .title { font-size: 3.6rem; font-weight: 700; letter-spacing: -.035em; line-height: 1.02; margin: 0; }
+  .headline { font-size: 2.3rem; font-weight: 650; letter-spacing: -.025em; line-height: 1.1; max-width: 22ch; margin: 0 auto; }
+  .headline.sm { font-size: 1.75rem; max-width: 28ch; }
+  .sub { font-size: .9rem; color: var(--muted); line-height: 1.45; margin: .9em auto 0; max-width: 40ch; }
+  .sub b { color: var(--ink); font-weight: 600; }
+  .accent { color: var(--accent); }
+  .grad { color: var(--accent); }
+  .fine { margin-top: 70px; font-size: .45rem; color: var(--muted); letter-spacing: .02em; }
+  .mono { font-family: var(--mono); }
+
+  .frame { position: relative; height: 660px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .thanks { display: flex; flex-direction: column; align-items: flex-start; text-align: left; width: max-content; margin: 0 auto; }
+  .thanks .who { font-size: 1.05rem; font-weight: 700; color: var(--ink); }
+  .thanks .role { font-size: .75rem; color: var(--muted); margin-top: 4px; }
+  .thanks .ctas { display: flex; gap: 44px; margin-top: 44px; }
+  .thanks .thead { display: flex; flex-direction: column; align-items: flex-start; }
+  .thanks .cb-word { height: 30px; width: auto; margin: 0 0 18px; }
+  .thanks .cta { display: flex; flex-direction: column; align-items: center; }
+  .thanks .card-qr { background: #fff; border: 1.5px solid var(--line); border-radius: 22px; padding: 22px; box-shadow: 0 1px 2px rgba(11,11,15,.04), 0 10px 28px rgba(11,11,15,.06); }
+  .thanks .qr { display: block; width: 170px; height: 170px; margin: 0; image-rendering: pixelated; }
+  .thanks .label { font-size: .9rem; font-weight: 700; color: var(--ink); margin-top: 20px; }
+  .byline { position: absolute; left: 24px; bottom: 16px; text-align: left; }
+  .byline .who { font-size: .8rem; font-weight: 700; color: var(--ink); }
+  .byline .role { font-size: .62rem; font-weight: 400; color: var(--muted); margin-top: 4px; }
+  .frame .fine { position: absolute; right: 24px; bottom: 20px; left: auto; margin: 0; }
+  .x4 { position: relative; width: 1060px; height: 480px; margin: 0 auto; zoom: 1.12; }
+  .x4 .actor { position: absolute; top: 0; width: 200px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .x4 .actor .tile { width: 64px; height: 64px; border-radius: 18px; }
+  .x4 .actor .tile svg { width: 30px; height: 30px; }
+  .x4 .actor .name { font-size: .55rem; font-weight: 600; }
+  .x4 .life { position: absolute; top: 100px; bottom: 0; width: 2px; background: repeating-linear-gradient(var(--line) 0 6px, transparent 6px 12px); }
+  .x4 .m { position: absolute; height: 30px; }
+  .x4 .m i { position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: #b8b8c2; }
+  .x4 .m.l i { background: #b8b8c2; }
+  .x4 .m i::after { content: ""; position: absolute; top: -5px; border-top: 6px solid transparent; border-bottom: 6px solid transparent; }
+  .x4 .m.r i::after { right: -2px; border-left: 9px solid #b8b8c2; }
+  .x4 .m.l i::after { left: -2px; border-right: 9px solid #b8b8c2; }
+  .x4 .m span { position: absolute; left: 0; right: 0; bottom: 6px; text-align: center; font-size: .56rem; white-space: nowrap; }
+  .x4 .m span b, .x4 .box b { font-family: var(--mono); color: var(--accent); margin-right: 6px; }
+  .x4 .m em { font-style: normal; margin-left: 6px; }
+  .x4 .m em img { width: 11px; height: 11px; display: inline; margin: 0 3px 0 0; vertical-align: -1px; }
+  .x4 .box { position: absolute; width: 140px; padding: 7px 0; text-align: center; font-size: .56rem; background: #0b0b0f0d; color: var(--ink);
+             border-radius: 999px; }
+  .trio { display: flex; gap: 28px; justify-content: center; margin-top: 46px; }
+  .tcard { position: relative; overflow: hidden; width: 330px; height: 380px; border-radius: 28px; padding: 34px 30px; box-sizing: border-box;
+           display: flex; flex-direction: column; align-items: flex-start; text-align: left; box-shadow: var(--shadow-lg); }
+  .tcard::before { content: ""; position: absolute; inset: 0; opacity: .5; pointer-events: none;
+                   background-image: radial-gradient(currentColor 1.4px, transparent 1.6px); background-size: 16px 16px;
+                   -webkit-mask-image: linear-gradient(200deg, #000 0%, transparent 62%); mask-image: linear-gradient(200deg, #000 0%, transparent 62%); }
+  .tcard::after { content: ""; position: absolute; width: 240px; height: 240px; right: -70px; top: -70px; border-radius: 50%; opacity: .55; pointer-events: none; }
+  .tcard > * { position: relative; z-index: 1; }
+  .t-blue { background: linear-gradient(160deg, #2a6eff 0%, #0052ff 55%, #0040d0 100%); color: #fff; }
+  .t-blue::before { color: rgba(255,255,255,.45); } .t-blue::after { background: radial-gradient(circle, #6a9bff, transparent 70%); }
+  .t-dark { background: linear-gradient(160deg, #1c2a6e 0%, #10184b 60%, #0a0f33 100%); color: #fff; }
+  .t-dark::before { color: rgba(176,202,255,.4); } .t-dark::after { background: radial-gradient(circle, #2a6eff, transparent 70%); }
+  .t-light { background: linear-gradient(160deg, #d6e3ff 0%, #b0caff 70%, #9dbcff 100%); color: #10184b; }
+  .t-light::before { color: rgba(0,82,255,.35); } .t-light::after { background: radial-gradient(circle, #ffffff, transparent 70%); }
+  .tglyph { width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.28); }
+  .t-light .tglyph { background: #0052ff; border-color: #0052ff; color: #fff; }
+  .tglyph svg { width: 30px; height: 30px; }
+  .tt { font-size: 1.6rem; font-weight: 700; letter-spacing: -.02em; margin-top: auto; }
+  .tcard .ticon { width: 40px; height: 40px; }
+  .quad { display: flex; gap: 22px; justify-content: center; margin-top: 40px; }
+  .quad .tcard { width: 262px; height: 330px; padding: 30px 26px; }
+  .quad .tt { font-size: 1.12rem; line-height: 1.15; }
+  .quad .td { font-size: .66rem; line-height: 1.4; margin-top: 10px; }
+  .t-ink { background: linear-gradient(160deg, #23232b 0%, #0b0b0f 65%); color: #fff; }
+  .t-ink::before { color: rgba(255,255,255,.28); } .t-ink::after { background: radial-gradient(circle, #0052ff, transparent 70%); }
+  .td { font-size: .62rem; opacity: .8; margin-top: 6px; }
+  .tlogos { display: flex; gap: 10px; margin-top: 22px; }
+  .tlogos span { width: 42px; height: 42px; border-radius: 12px; background: #fff; display: grid; place-items: center; box-shadow: 0 4px 14px rgba(0,0,0,.12); }
+  .tlogos img { width: 22px; height: 22px; object-fit: contain; display: block; }
+  .tlogos svg { width: 22px; height: 22px; color: #0b0b0f; }
+  /* chips + tiles */
+  .chip { font-family: var(--mono); font-size: .44rem; font-weight: 500; color: var(--accent); background: var(--accent-soft);
+          border-radius: 999px; padding: 4px 10px; white-space: nowrap; letter-spacing: .01em; }
+  .chip.solid { background: var(--accent); color: #fff; }
+  .chip.ink { background: #0b0b0f0d; color: var(--ink); }
+  .tile { width: 52px; height: 52px; border-radius: 14px; background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow);
+          display: grid; place-items: center; flex: none; }
+  .tile img { width: 28px; height: 28px; object-fit: contain; display: block; }
+  .tile svg { width: 26px; height: 26px; color: var(--ink); }
+  .tile.blue { background: var(--accent); border-color: var(--accent); }
+  .tile.blue svg { color: #fff; }
+  .tile.lg { width: 76px; height: 76px; border-radius: 20px; }
+  .tile.lg svg { width: 38px; height: 38px; }
+  .tile.lg img { width: 40px; height: 40px; }
+  .svc { display: flex; align-items: center; gap: 10px; }
+  .scan .tile { width: 40px; height: 40px; border-radius: 11px; }
+  .scan .tile img, .scan .tile svg { width: 22px; height: 22px; }
+  .svc .cap { font-size: .42rem; color: var(--muted); margin-top: 3px; text-align: center; }
+
+  /* cards */
+  .cards { display: flex; gap: 26px; justify-content: center; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow);
+          padding: 34px 26px; width: 236px; display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; }
+  .card .glyph { width: 62px; height: 62px; border-radius: 50%; background: var(--accent); color: #fff; display: grid; place-items: center; }
+  .card .glyph svg { width: 28px; height: 28px; }
+  .card .c-title { font-size: .9rem; font-weight: 650; letter-spacing: -.01em; }
+  .card .c-role { font-size: .6rem; color: var(--muted); line-height: 1.4; }
+
+  /* pills */
+  .pills { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; max-width: 900px; margin: 0 auto; }
+  .pill { border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: 10px 20px; font-size: .62rem; font-weight: 500; box-shadow: var(--shadow); }
+
+  .metric { font-size: 7rem; font-weight: 750; letter-spacing: -.045em; line-height: 1; }
+
+  /* ---------- slide 1: hook chip wall ---------- */
+    .wall { position: absolute; inset: 0 -40px; overflow: hidden; }
+  .wall .fly { position: absolute; display: flex; align-items: center; gap: 8px; background: var(--card); border: 1px solid var(--line);
+               border-radius: 999px; padding: 6px 12px 6px 6px; box-shadow: var(--shadow); opacity: 0; transform: translateY(14px) scale(.96);
+               transition: opacity .6s var(--ease), transform .8s var(--ease); }
+  .wall .fly .tile { width: 30px; height: 30px; border-radius: 50%; box-shadow: none; }
+  .wall .fly .tile img, .wall .fly .tile svg { width: 16px; height: 16px; }
+  .wall .fly span { font-size: .44rem; color: var(--ink); }
+  section.present .wall .fly { opacity: 1; transform: none; }
+  .hook-center { position: relative; z-index: 2; background: radial-gradient(closest-side, var(--bg) 70%, transparent); padding: 60px 90px; display: inline-block; }
+  .hook-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 3; }
+
+  /* ---------- slide 2: front door ---------- */
+  .door { display: flex; align-items: center; justify-content: center; gap: 46px; margin-top: 44px; }
+  .door .tile.lg { width: 110px; height: 110px; border-radius: 28px; }
+  .door .tile.lg svg { width: 52px; height: 52px; }
+  .door .lab { font-size: .5rem; color: var(--muted); margin-top: 12px; text-align: center; }
+  .door .arrow { color: #b8b8c2; font-size: 1.4rem; }
+  .world { display: grid; grid-template-columns: repeat(4, 46px); gap: 10px; }
+  .world .tile { width: 46px; height: 46px; border-radius: 12px; }
+  .world .tile svg, .world .tile img { width: 22px; height: 22px; }
+
+  /* ---------- slide 3: x402 diagram ---------- */
+  .x402 { position: relative; width: 980px; height: 400px; margin: 10px auto 0; }
+  .x402 .actor { position: absolute; top: 40px; width: 200px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .x402 .actor .tile.lg { width: 96px; height: 96px; border-radius: 26px; }
+  .x402 .actor .tile.lg svg { width: 46px; height: 46px; }
+  .x402 .actor .name { font-size: .6rem; font-weight: 600; }
+  .x402 .actor .life { width: 2px; height: 210px; background: repeating-linear-gradient(var(--line) 0 6px, transparent 6px 12px); }
+  .x402 .left { left: 40px; } .x402 .right { right: 40px; }
+  .x402 .msg { position: absolute; left: 240px; right: 240px; height: 40px; display: flex; align-items: center; }
+  .x402 .msg .line { flex: 1; height: 2px; background: #b8b8c2; position: relative; }
+  .x402 .msg .line::after { content: ""; position: absolute; top: -6px; border: 7px solid transparent; }
+  .x402 .msg.r .line::after { right: -4px; border-left: 10px solid #b8b8c2; border-right: 0; }
+  .x402 .msg.l .line { background: #b8b8c2; }
+  .x402 .msg.l .line::after { left: -4px; border-right: 10px solid #b8b8c2; border-left: 0; }
+  .x402 .msg .label { position: absolute; left: 50%; transform: translate(-50%, -30px); display: flex; gap: 8px; align-items: center; white-space: nowrap; font-size: .5rem; }
+  .x402 .msg .label code { font-family: var(--mono); font-size: .46rem; background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 3px 8px; }
+  .x402 .m1 { top: 175px; } .x402 .m2 { top: 235px; } .x402 .m3 { top: 295px; } .x402 .m4 { top: 355px; }
+  .x402 .sign { position: absolute; left: 10px; top: 268px; }
+
+  /* ---------- slide 7: ladder ---------- */
+  .ladder { display: flex; align-items: flex-end; justify-content: center; gap: 30px; margin-top: 30px; height: 330px; }
+  .hook-center .headline { max-width: 20ch; }
+  .rung { width: 250px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow);
+          display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; }
+  .rung .n { font-family: var(--mono); font-size: .45rem; color: var(--muted); }
+  .rung .t { font-size: 1.1rem; font-weight: 650; }
+  .rung .d { font-size: .52rem; color: var(--muted); }
+  .rung.r1 { height: 200px; } .rung.r2 { height: 260px; } .rung.r3 { height: 320px; }
+  .rung.r3 { border-color: var(--accent); }
+
+  /* ---------- workflow diagrams (rung 1 / 2 / 3) ---------- */
+  .flowd { display: flex; align-items: center; justify-content: center; gap: 0; margin-top: 14px; }
+  .col { display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 0 12px; }
+  .col .ch { font-size: .38rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; height: 14px; }
+  .node { display: flex; flex-direction: column; align-items: center; gap: 7px; }
+  .link { width: 34px; height: 2px; background: #b8b8c2; position: relative; align-self: center; margin-top: 18px; }
+  .link::after { content: ""; position: absolute; right: -2px; top: -4px; border-left: 7px solid #b8b8c2; border-top: 5px solid transparent; border-bottom: 5px solid transparent; }
+  .people { display: flex; gap: 4px; }
+  .people svg { width: 30px; height: 30px; color: var(--accent); }
+  .user svg { width: 34px; height: 34px; color: var(--ink); }
+  .agentbox { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .agentbox .tile.lg { width: 70px; height: 70px; }
+  .tally { margin-top: 56px; display: flex; justify-content: center; gap: 14px; align-items: center; }
+  .tally .chip { font-size: .5rem; padding: 7px 14px; }
+  .total { font-family: var(--mono); font-size: .5rem; color: var(--ink); background: var(--card); border: 1px solid var(--line); border-radius: 999px;
+           padding: 7px 14px; box-shadow: var(--shadow); }
+  .total b { color: var(--accent); font-weight: 600; }
+  .gate { display: flex; align-items: center; gap: 8px; font-size: .46rem; color: var(--ink); background: var(--card); border: 1.5px dashed var(--accent);
+          border-radius: 999px; padding: 6px 12px; }
+  .gate svg { width: 16px; height: 16px; color: var(--accent); }
+
+
+  /* endpoint cards (research / buy) */
+  .ask { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 18px; }
+  .ask .bubble { font-size: 20px; background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 10px 20px; box-shadow: var(--shadow); }
+  .ask .user svg { width: 40px; height: 40px; }
+  .ask .link { margin-top: 0; width: 44px; }
+  .ask .tile { width: 60px; height: 60px; border-radius: 16px; }
+  .ask .tile svg { width: 30px; height: 30px; }
+  .ask .chip { font-size: 15px; padding: 5px 12px; }
+  .ask .gate { font-size: 16px; padding: 9px 16px; }
+  .ask .gate svg { width: 20px; height: 20px; }
+  .rgrid { display: flex; justify-content: center; gap: 16px; margin-top: 34px; }
+  .rcard { width: 248px; background: var(--card); border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow); padding: 20px 20px 14px; text-align: left; }
+  .rcard .ch { font-size: 12px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+  .rcard .q { font-size: 19px; font-weight: 600; line-height: 1.25; margin-top: 6px; min-height: 2.5em; }
+  .rcard .who { display: flex; align-items: center; gap: 12px; margin: 10px 0 8px; font-size: 18px; font-weight: 600; }
+  .rcard .who .tile { width: 44px; height: 44px; border-radius: 12px; }
+  .rcard .who .tile img { width: 28px; height: 28px; border-radius: 6px; }
+  .rcard .ep { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 8px 0; border-top: 1px solid var(--line); }
+  .rcard .ep code { font-family: var(--mono); font-size: 13.5px; color: var(--ink); white-space: nowrap; }
+  .rcard .ep .chip { font-size: 13px; padding: 3px 9px; }
+  .rcard .ep small { display: block; font-family: var(--font); font-size: 13px; color: var(--muted); margin-top: 3px; }
+  .rcard.wide { width: 324px; }
+  .rtally { margin-top: 26px; }
+  .rtally .total { font-size: 16px; padding: 9px 18px; }
+  .rtally .total b { color: var(--ink); }
+
+
+  /* basket rebalance (trade C) */
+  .bsk-sub { font-size: 20px; color: var(--muted); margin-top: 8px; }
+  .bsk { display: flex; justify-content: center; align-items: center; gap: 56px; margin-top: 84px; }
+  .bsk .rules { display: flex; flex-direction: column; gap: 30px; text-align: left; }
+  .bsk .rule .k { font-size: .56rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  .bsk .rule .v { font-size: .82rem; font-weight: 500; margin-top: 4px; }
+  .bcard { width: 600px; font-family: var(--mono); }
+  .brow { display: grid; grid-template-columns: 130px 1fr 110px; align-items: center; gap: 22px; padding: 14px 0; border-top: 1px solid var(--line); text-align: left; }
+  .brow.hd { border-top: 0; padding: 0 0 10px; font-size: 15px; color: var(--muted); }
+  .brow.hd span:last-child { text-align: right; }
+  .brow .a { display: flex; align-items: center; gap: 10px; font-family: var(--font); font-size: 20px; font-weight: 600; }
+  .brow .a img { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; }
+  .brow .bar { position: relative; height: 14px; background: #ececf1; border-radius: 6px; }
+  .brow .bar i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 6px; background: #0052ff; }
+  .brow .bar b { position: absolute; top: -6px; bottom: -6px; width: 2px; background: var(--ink); }
+  .brow .pct { display: flex; justify-content: space-between; font-size: 14px; color: var(--muted); margin-top: 8px; }
+  .brow .pct em { font-style: normal; color: var(--ink); font-weight: 600; }
+  .brow .act { justify-self: end; font-size: 17px; font-weight: 600; color: var(--accent); }
+  .brow .act.sell { color: var(--ink); }
+  .bsk-foot { position: absolute; left: 0; right: 0; bottom: 40px; font-size: 22px; color: var(--muted); }
+  .bsk-foot b { color: var(--ink); font-weight: 600; }
+
+
+  /* buy: service pills in two lanes */
+  .lanes { display: flex; flex-direction: column; gap: 34px; margin: 50px auto 0; }
+  .lane { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .lane .lh { flex: none; display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); text-align: left; }
+  .lane .lh svg { width: 18px; height: 18px; color: var(--muted); }
+  .lane .pills { display: flex; flex-wrap: nowrap; gap: 14px; justify-content: center; }
+  .pill { display: flex; align-items: center; gap: 12px; background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 8px 20px 8px 8px; box-shadow: var(--shadow);
+          opacity: 0; transform: translateY(14px) scale(.96); transition: opacity .6s var(--ease), transform .8s var(--ease); }
+  section.present .pill { opacity: 1; transform: none; }
+  .pill .tile { width: 48px; height: 48px; border-radius: 50%; box-shadow: none; }
+  .pill .tile img { width: 28px; height: 28px; border-radius: 5px; }
+  .pill .t { text-align: left; line-height: 1.2; }
+  .pill .t b { display: block; font-size: 19px; font-weight: 600; white-space: nowrap; }
+  .pill .t small { font-size: 14px; color: var(--muted); white-space: nowrap; }
+  .sol-pills .pill { justify-content: center; text-align: center; padding: 10px 20px; }
+  .pill .chip { font-size: 14px; padding: 5px 10px; }
+
+  /* stack of fragments on one slide (trade) */
+  .stage { position: relative; height: 470px; }
+  .flowd { zoom: 1.3; }
+  .stage .flowd { zoom: 1.12; }
+  .dca { display: flex; align-items: center; justify-content: center; gap: 56px; margin-top: 64px; }
+  .dca .rules { display: flex; flex-direction: column; gap: 34px; text-align: left; }
+  .dca .rule .k { font-size: .56rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  .dca .rule .v { font-size: 1rem; font-weight: 500; margin-top: 4px; }
+  .dca .rule .v.m { font-family: var(--mono); font-size: .8rem; }
+  .dca .curve { width: 540px; height: auto; display: block; font-family: var(--mono); }
+  .dca .curve text { font-size: 17px; fill: var(--muted); }
+  .dca .curve .pt { fill: var(--ink); font-weight: 600; }
+  .dca-qr { position: absolute; left: 60px; bottom: -70px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .dca-qr .card-qr { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 7px; box-shadow: var(--shadow); }
+  .dca-qr .qr { display: block; width: 96px; height: 96px; image-rendering: pixelated; }
+  .dca-qr .label { font-size: .55rem; font-weight: 600; color: var(--muted); }
+  .dca .curve .lg { font-size: 15px; fill: var(--ink); }
+  .dca .curve .val { fill: var(--ink); font-weight: 600; font-size: 16px; }
+  .dca .curve .ax { font-size: 15px; }
+  .dca .rule .v.s { font-size: .82rem; }
+  .dca-foot { position: absolute; left: 0; right: 0; bottom: 30px; font-size: .5rem; color: var(--muted); }
+  .rung .d { font-size: .62rem; }
+  .rung .n { font-size: .55rem; }
+  .card .c-role { font-size: .64rem; }
+  .ideas .glyph { background: var(--ink); }
+  .ideas .card { width: 280px; }
+
+  /* reality */
+  .duo { display: flex; gap: 30px; justify-content: center; margin-top: 10px; }
+  .stat { width: 380px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 30px; text-align: left; }
+  .stat .big { font-size: 2.4rem; font-weight: 750; letter-spacing: -.03em; }
+  .stat .lbl { font-size: .58rem; color: var(--muted); line-height: 1.4; margin-top: 6px; }
+  .quote { font-size: 1.05rem; font-weight: 600; letter-spacing: -.01em; line-height: 1.3; max-width: 30ch; margin: 34px auto 0; }
+
+  /* demo */
+  .demo-frame { width: 1100px; height: 619px; margin: 0 auto; border-radius: 22px; overflow: hidden; background: #0b0b0f; box-shadow: var(--shadow-lg);
+                display: grid; place-items: center; color: #9a9aa8; font-size: .6rem; position: relative; }
+  .demo-frame video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+  .reveal .fragment.fade-up { transform: translate(0, 24px); }
+  .reveal .fragment.fade-up.visible { transform: none; }
+  .reveal .fragment { transition: all .6s var(--ease); }
+
+  /* trading setup: a stepper, then the plain-English ask */
+  .tline { position: relative; display: grid; grid-template-columns: repeat(4, 232px); column-gap: 36px; justify-content: center; margin-top: 56px; text-align: center; }
+  .tline::before { content: ""; position: absolute; top: 23px; left: calc(50% - 536px + 116px); right: calc(50% - 536px + 116px); height: 2px; background: linear-gradient(90deg, #b0caff, var(--accent)); }
+  .tl .dot { position: relative; z-index: 1; margin: 0 auto; width: 48px; height: 48px; border-radius: 50%; background: var(--bg); border: 2px solid var(--accent); color: var(--accent); display: grid; place-items: center; }
+  .tl .dot svg { width: 22px; height: 22px; }
+  .tl .dot.on { background: var(--accent); color: #fff; }
+  .tl .n { font-family: var(--mono); font-size: 13px; color: var(--accent); margin-top: 22px; }
+  .tl .t { font-size: 19px; font-weight: 650; letter-spacing: -.01em; margin-top: 20px; }
+  .tl .h { font-size: 14px; color: var(--muted); line-height: 1.45; margin-top: 6px; padding: 0 8px; }
+  .ask2 { display: inline-flex; align-items: center; gap: 14px; margin-top: 54px; background: var(--card); border: 1px solid var(--line); border-radius: 999px; box-shadow: var(--shadow); padding: 8px 24px 8px 8px; font-size: 18px; color: var(--ink); }
+  .ask2 .tile { width: 40px; height: 40px; border-radius: 50%; box-shadow: none; }
+  .ask2 .tile svg { width: 20px; height: 20px; }
+  .plain2 { margin-top: 56px; font-size: 18px; color: var(--muted); }
+  .plain2 b { color: var(--ink); font-weight: 600; }
+
+  /* discovery: the agent finds services, then builds the workflow */
+  .disc { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 40px; }
+  .disc .dcol { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .disc .dh { font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .disc .arrow { color: #b8b8c2; font-size: 26px; margin-top: 28px; }
+  .disc .task { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .disc .task .tile.blue { width: 64px; height: 64px; border-radius: 18px; }
+  .disc .task .tile.blue svg { width: 30px; height: 30px; }
+  .disc .bub { width: 200px; background: var(--card); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); padding: 12px 14px; font-size: 15px; line-height: 1.35; text-align: left; }
+  .dirs { width: 250px; background: var(--card); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); padding: 6px 16px; text-align: left; }
+  .dirs .q { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 12px; color: var(--muted); padding: 10px 0; }
+  .dirs .q svg { width: 14px; height: 14px; color: var(--accent); }
+  .dirs .d { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); }
+  .dirs .d img { width: 26px; height: 26px; border-radius: 7px; object-fit: contain; margin: 0; }
+  .dirs .d b { font-size: 15px; font-weight: 650; }
+  .dirs .d small { margin-left: 4px; }
+  .dirs .d small { font-size: 12px; color: var(--muted); }
+  .picks { display: grid; grid-template-columns: repeat(4, 44px); gap: 10px; }
+  .picks .tile { width: 44px; height: 44px; border-radius: 12px; }
+  .picks .tile img { width: 24px; height: 24px; }
+  .disc .note { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .wsteps { display: flex; flex-direction: column; gap: 6px; font-family: var(--mono); font-size: 13px; }
+  .wsteps span { background: var(--accent-soft); color: var(--accent); border-radius: 999px; padding: 5px 14px; text-align: center; }
+  .wsteps i { font-style: normal; color: #b8b8c2; text-align: center; font-size: 11px; line-height: 1; }
+
+  /* research workflow: ask → paid data → brief */
+  .rflow { margin-top: 30px; gap: 6px; }
+  .rflow .link { width: 46px; }
+  .askb { background: var(--accent); color: #fff; font-size: 13px; padding: 8px 12px; border-radius: 12px 12px 12px 4px; white-space: nowrap; }
+  .rgrid2 { display: grid; grid-template-columns: auto auto; gap: 12px 18px; }
+  .rflow .node .cap2 { font-size: 10px; }
+  .srcs { width: 270px; text-align: left; background: var(--card); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); padding: 6px 16px; }
+  .src { display: flex; align-items: center; gap: 12px; padding: 9px 0; border-top: 1px solid var(--line); }
+  .src:first-child { border-top: 0; }
+  .src img { width: 22px; height: 22px; border-radius: 6px; object-fit: contain; flex: none; }
+  .src .sm { flex: 1; display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+  .src .sl { font-size: 9px; color: var(--muted); }
+  .src code { font-family: var(--mono); font-size: 10.5px; color: var(--ink); white-space: nowrap; }
+  .src b { font-family: var(--mono); font-size: 10.5px; font-weight: 600; color: var(--accent); }
+  .stot { display: flex; justify-content: space-between; align-items: center; padding: 9px 0 8px; border-top: 1px solid var(--line); font-family: var(--mono); font-size: 10px; color: var(--muted); }
+  .stot b { font-size: 11px; color: var(--ink); font-weight: 600; }
+  .rflow .col .ch { font-size: 10px; }
+  .brief { width: 280px; text-align: left; background: var(--card); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); padding: 14px 18px; }
+  .brief .bt { font-size: 15px; font-weight: 650; margin-bottom: 4px; }
+  .brief .row { display: flex; justify-content: space-between; gap: 12px; padding: 7px 0; border-top: 1px solid var(--line); font-size: 12px; }
+  .brief .k { font-family: var(--mono); color: var(--muted); white-space: nowrap; }
+  .brief .v { font-weight: 600; text-align: right; }
+  .brief .verdict2 { margin-top: 8px; padding: 8px 10px; border-radius: 10px; background: var(--accent-soft); color: var(--accent); font-size: 12px; font-weight: 600; }
+
+  /* why agents need to pay: APIs behind accounts */
+  .apigate { display: flex; align-items: center; justify-content: center; gap: 22px; margin-top: 54px; }
+  .apigate .tile.lg { width: 96px; height: 96px; border-radius: 26px; }
+  .apigate .tile.lg svg { width: 44px; height: 44px; }
+  .apigate .lab { font-size: 15px; color: var(--muted); margin-top: 10px; text-align: center; }
+  .apigate .arrow { color: #b8b8c2; font-size: 1.1rem; }
+  .apigate .steps { display: flex; flex-direction: column; gap: 10px; }
+  .apigate .gate { font-size: 17px; padding: 9px 18px; }
+  .apigate .gate svg { width: 18px; height: 18px; }
+
+  /* why agents need to pay: ads pay for the free web */
+  .adsplit { display: flex; justify-content: center; gap: 34px; margin-top: 34px; }
+  .adpanel { width: 470px; text-align: left; }
+  .adpanel .who { display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 600; margin-bottom: 12px; }
+  .adpanel .who .tile { width: 40px; height: 40px; border-radius: 12px; }
+  .adpanel .who .tile svg { width: 20px; height: 20px; }
+  .page { background: var(--card); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); overflow: hidden; height: 232px; box-sizing: border-box; }
+  .page .bar { display: flex; gap: 6px; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+  .page .bar i { width: 9px; height: 9px; border-radius: 50%; background: #e2e2ea; }
+  .page .body { display: grid; grid-template-columns: 1fr 140px; gap: 16px; padding: 16px; height: 190px; box-sizing: border-box; }
+  .page .song .t { font-size: 18px; font-weight: 650; }
+  .page .song .s { font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .chords { font-family: var(--mono); font-size: 22px; font-weight: 600; color: var(--ink); margin-top: 22px; letter-spacing: .02em; }
+  .page .song .lines i { display: block; height: 7px; border-radius: 4px; background: #efeff4; margin-top: 10px; }
+  .ads { display: flex; flex-direction: column; gap: 8px; }
+  .ad { position: relative; border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; font-size: 13px; background: #fbfbfd; }
+  .ad b { display: block; font-size: 14px; }
+  .ad small { color: var(--muted); }
+  .ad::after { content: "Ad"; position: absolute; top: 6px; right: 8px; font-family: var(--mono); font-size: 9px; color: var(--muted); }
+  .adpanel .verdict { font-family: var(--mono); font-size: 15px; white-space: nowrap; margin-top: 14px; }
+  .adpanel .verdict b { color: var(--accent); font-weight: 600; }
+  .reply { background: var(--card); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); padding: 16px; height: 232px; box-sizing: border-box; }
+  .reply .q { margin-left: auto; width: fit-content; background: var(--accent); color: #fff; font-size: 14px; padding: 8px 14px; border-radius: 14px 14px 4px 14px; }
+  .reply .a { width: fit-content; background: #f2f2f6; font-size: 14px; padding: 10px 14px; border-radius: 14px 14px 14px 4px; margin-top: 12px; }
+  .reply .a .chords { font-size: 20px; margin-top: 6px; }
+  .reply .gone { display: flex; gap: 8px; margin-top: 14px; }
+  .reply .gone span { font-size: 12px; color: #a3a3ae; border: 1px dashed #d4d4dc; border-radius: 8px; padding: 4px 8px; text-decoration: line-through; }
+
+  /* x402 answer */
+  .duo2 { display: flex; justify-content: center; gap: 28px; margin-top: 40px; }
+  .duo2 .tcard { width: 420px; height: 330px; }
+  .duo2 .tt { font-size: 1.3rem; }
+  .duo2 .td { font-size: 16px; line-height: 1.4; }
+  .duo2 .http { font-family: var(--mono); font-size: 15px; margin-top: 18px; display: flex; flex-direction: column; gap: 8px; width: 100%; }
+  .duo2 .http div { display: flex; justify-content: space-between; background: rgba(255,255,255,.12); border-radius: 10px; padding: 8px 12px; }
+  .tfoot { font-size: 16px; color: var(--muted); margin-top: 30px; }
+
+  /* work diagram: drill-down tiles grouped as one headless-browser session */
+  .hbox { border: 1.5px solid var(--line); border-radius: 18px; background: rgba(255,255,255,.55); padding: 8px 12px 12px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .hb-h { display: flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 9px; color: var(--muted); }
+  .hb-h img { width: 13px; height: 13px; }
+  .hb-grid { display: grid; grid-template-columns: auto auto; gap: 10px; }
+
+  /* work diagram: loop from drill down back to find */
+  .flowd.has-loop { position: relative; }
+  .flowd .loop { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+  .flowd .loop .lp { fill: none; stroke: #0052ff; stroke-width: 2; stroke-dasharray: 6 6; }
+  .flowd .loop .lt { font-family: var(--mono); font-size: 9px; font-weight: 500; fill: var(--accent); text-anchor: middle; }
+
+  /* speculative slide: bidding for attention */
+  .node .cap2 { font-size: .36rem; color: var(--muted); margin-top: -2px; white-space: nowrap; }
+
+  /* cards that rise in one after another on slide entry (like the Buy pills) */
+  .stag { opacity: 0; transform: translateY(14px) scale(.96); transition: opacity .6s var(--ease), transform .8s var(--ease); }
+  section.present .stag { opacity: 1; transform: none; }
+
+  /* part B: the trio flips (Work→Spend, Buy→Earn, Trade→Grow) */
+  .flipcard { position: relative; width: 330px; height: 380px; }
+  .flipcard .flip-inner { position: absolute; inset: 0; }
+  .flipcard .tcard { position: absolute; inset: 0; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden;
+                     transition: transform .9s var(--ease); transition-delay: inherit; }
+  .flipcard .tcard.front { transform: none; }
+  .flipcard .tcard.back { transform: perspective(1600px) rotateY(-180deg); }
+  .flipcard .tcard.back .tt { font-size: 2.4rem; }
+  section:has(.flip-trigger.visible) .flipcard .tcard.front { transform: perspective(1600px) rotateY(180deg); }
+  section:has(.flip-trigger.visible) .flipcard .tcard.back { transform: none; }
+  .flip-trigger { position: absolute; width: 0; height: 0; overflow: hidden; }
+</style>
+</head>
+<body>
+
+<!-- inline icon sprite (feather-style) -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></symbol>
+    <symbol id="i-person" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="7.5" r="4"/><path d="M3.5 21c.4-4.6 4-7.5 8.5-7.5s8.1 2.9 8.5 7.5z"/></symbol>
+    <symbol id="i-agent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="16" height="12" rx="3"/><path d="M12 3v4"/><circle cx="9" cy="13" r="1.2" fill="currentColor"/><circle cx="15" cy="13" r="1.2" fill="currentColor"/><path d="M2 12v3M22 12v3"/></symbol>
+    <symbol id="i-wallet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7H5a2 2 0 0 1 0-4h13v4"/><path d="M3 5v14a2 2 0 0 0 2 2h15V7"/><circle cx="16" cy="14" r="1.3" fill="currentColor"/></symbol>
+    <symbol id="i-browser" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 9h20"/><circle cx="5.5" cy="6.5" r=".6" fill="currentColor"/><circle cx="8" cy="6.5" r=".6" fill="currentColor"/></symbol>
+    <symbol id="i-server" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="7" rx="2"/><rect x="3" y="14" width="18" height="7" rx="2"/><path d="M7 6.5h.01M7 17.5h.01"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></symbol>
+    <symbol id="i-mailok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h9"/><path d="m22 6-10 7L2 6"/><path d="m16 19 2 2 4-4"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></symbol>
+    <symbol id="i-thumb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10v11H3V10zM7 10l4-8a3 3 0 0 1 3 3v4h6a2 2 0 0 1 2 2.3l-1.4 8A2 2 0 0 1 18.6 21H7"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></symbol>
+    <symbol id="i-bank" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10 12 4l9 6M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 21h18"/></symbol>
+    <symbol id="i-gap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17h7M14 7h7"/><path d="M12 19V5M9 8l3-3 3 3M9 16l3 3 3-3"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 8-6-16-3 8H2"/></symbol>
+    <symbol id="i-futures" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/><path d="M17 3.5 19.5 6M19.5 3.5 17 6" stroke-width="1.6"/></symbol>
+    <symbol id="i-reserve" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></symbol>
+    <symbol id="i-swap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3l4 4-4 4M21 7H8M7 21l-4-4 4-4M3 17h13"/></symbol>
+    <symbol id="i-sim" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/><rect x="8" y="11" width="8" height="7" rx="1"/></symbol>
+    <symbol id="i-plug" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6M15 2v6M6 8h12v4a6 6 0 0 1-12 0zM12 18v4"/></symbol>
+    <symbol id="i-plane" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></symbol>
+    <symbol id="i-letter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="m2 7 10 6 10-6"/><rect x="16" y="8" width="3" height="3" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-gift" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M19 12v9H5v-9M7.5 8a2.5 2.5 0 0 1 0-5C11 3 12 8 12 8s1-5 4.5-5a2.5 2.5 0 0 1 0 5"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+    <symbol id="i-image" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 10 5-10 5L2 7z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 18 6-6-6-6M8 6l-6 6 6 6"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></symbol>
+    <!-- Lucide icons (lucide-static 1.70.0, ISC licence, vendor/lucide/LICENSE) -->
+    <symbol id="lu-card-sim" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 14v4" /><path d="M14.172 2a2 2 0 0 1 1.414.586l3.828 3.828A2 2 0 0 1 20 7.828V20a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" /><path d="M8 14h8" /><rect x="8" y="10" width="8" height="8" rx="2" /></symbol>
+    <symbol id="lu-plug" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-5" /><path d="M15 8V2" /><path d="M17 8a1 1 0 0 1 1 1v4a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1z" /><path d="M9 8V2" /></symbol>
+    <symbol id="lu-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7" /><rect x="2" y="4" width="20" height="16" rx="2" /></symbol>
+    <symbol id="lu-chart-candlestick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5v4" /><rect width="4" height="6" x="7" y="9" rx="1" /><path d="M9 15v2" /><path d="M17 3v2" /><rect width="4" height="8" x="15" y="5" rx="1" /><path d="M17 13v3" /><path d="M3 3v16a2 2 0 0 0 2 2h16" /></symbol>
+    <symbol id="lu-landmark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 18v-7" /><path d="M11.119 2.205a2 2 0 0 1 1.762 0l7.84 3.846A.5.5 0 0 1 20.5 7h-17a.5.5 0 0 1-.22-.949z" /><path d="M14 18v-7" /><path d="M18 18v-7" /><path d="M3 22h18" /><path d="M6 18v-7" /></symbol>
+    <symbol id="lu-calendar-days" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v3" /><path d="M16 2v3" /><rect x="3" y="3" width="18" height="18" rx="2" /><path d="M3 9h18" /><path d="M8 13h.01" /><path d="M12 13h.01" /><path d="M16 13h.01" /><path d="M8 17h.01" /><path d="M12 17h.01" /><path d="M16 17h.01" /></symbol>
+    <symbol id="lu-user-round-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16.5 16.5 5 5" /><path d="M2 21a8 8 0 0 1 11.531-7.18" /><path d="m21.5 16.5-5 5" /><circle cx="10" cy="8" r="5" /></symbol>
+    <symbol id="lu-trending-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 7h6v6" /><path d="m22 7-8.5 8.5-5-5L2 17" /></symbol>
+    <symbol id="lu-trending-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 17h6v-6" /><path d="m22 17-8.5-8.5-5 5L2 7" /></symbol>
+    <symbol id="lu-coins" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.744 17.736a6 6 0 1 1-7.48-7.48" /><path d="M15 6h1v4" /><path d="m6.134 14.768.866-.5 2 3.464" /><circle cx="16" cy="8" r="6" /></symbol>
+    <symbol id="lu-shield-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" /><path d="m9 12 2 2 4-4" /></symbol>
+    <symbol id="lu-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" /><path d="M2 12h20" /></symbol>
+    <symbol id="lu-shopping-basket" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 11-1 9"/><path d="m19 11-4-7"/><path d="M2 11h20"/><path d="m3.5 11 1.6 7.4a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6l1.7-7.4"/><path d="M4.5 15.5h15"/><path d="m5 11 4-7"/><path d="m9 11 1 9"/></symbol>
+    <symbol id="lu-scale" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></symbol>
+    <symbol id="lu-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+    <symbol id="lu-credit-card" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><path d="M2 10h20"/></symbol>
+    <symbol id="lu-key-round" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"/><circle cx="16.5" cy="7.5" r=".5" fill="currentColor"/></symbol>
+    <symbol id="lu-user-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6"/><path d="M22 11h-6"/></symbol>
+    <symbol id="lu-guitar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m11.9 12.1 4.514-4.514"/><path d="M20.1 2.3a1 1 0 0 0-1.4 0l-1.114 1.114A2 2 0 0 0 17 4.828v1.344a2 2 0 0 1-.586 1.414A2 2 0 0 1 17.828 7h1.344a2 2 0 0 0 1.414-.586L21.7 5.3a1 1 0 0 0 0-1.4z"/><path d="m6 16 2 2"/><path d="M8.2 9.9C8.7 8.8 9.8 8 11 8c2.8 0 5 2.2 5 5 0 1.3-.5 2.3-1.3 3l-.6.6c-.7.7-1.1 1.7-1.1 2.7 0 .5-.2 1-.6 1.4l-.2.2c-.6.6-1.5.6-2.1 0l-5.9-5.9c-.6-.6-.6-1.5 0-2.1l.2-.2c.4-.4.9-.6 1.4-.6 1 0 2-.4 2.7-1.1l.6-.6Z"/></symbol>
+    <symbol id="lu-server" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="8" x="2" y="2" rx="2"/><rect width="20" height="8" x="2" y="14" rx="2"/><path d="M6 6h.01"/><path d="M6 18h.01"/></symbol>
+    <symbol id="lu-mic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/></symbol>
+    <symbol id="lu-megaphone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></symbol>
+    <symbol id="lu-gavel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m14.5 12.5-8 8a2.12 2.12 0 1 1-3-3l8-8"/><path d="m16 16 6-6"/><path d="m8 8 6-6"/><path d="m9 7 8 8"/><path d="m21 11-8-8"/></symbol>
+    <symbol id="lu-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="lu-map-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></symbol>
+    <symbol id="lu-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+    <symbol id="lu-ad-slot" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></symbol>
+    <symbol id="lu-shirt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z" /></symbol>
+    <symbol id="lu-plane" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z" /></symbol>
+    <symbol id="lu-sport-shoe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 10.42 4.8-5.07" /><path d="M19 18h3" /><path d="M9.5 22 21.414 9.415A2 2 0 0 0 21.2 6.4l-5.61-4.208A1 1 0 0 0 14 3v2a2 2 0 0 1-1.394 1.906L8.677 8.053A1 1 0 0 0 8 9c-.155 6.393-2.082 9-4 9a2 2 0 0 0 0 4h14" /></symbol>
+    <symbol id="lu-map-pinned" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8c0 3.613-3.869 7.429-5.393 8.795a1 1 0 01-1.214 0C9.87 15.429 6 11.613 6 8a6 6 0 0112 0" /><path d="M4.474 15h-.197a1 1 0 00-.969.753l-1.097 4.35a1.5 1.5 0 001.444 1.898L20.344 22a1.5 1.5 0 001.446-1.897l-1.098-4.35a1 1 0 00-.969-.753h-.197" /><circle cx="12" cy="8" r="2" /></symbol>
+    <!-- Tabler icons (@tabler/icons 3.50.0, MIT licence, vendor/tabler/LICENSE) -->
+    <symbol id="tb-device-mobile" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 5a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2v-14"/><path d="M11 4h2"/><path d="M12 17v.01"/></symbol>
+    <symbol id="lu-luggage" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2" /><path d="M8 18V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v14" /><path d="M10 20h4" /><circle cx="16" cy="20" r="2" /><circle cx="8" cy="20" r="2" /></symbol>
+  </defs>
+</svg>
+
+<div class="reveal"><div class="slides">
+
+<!-- 0 · TITLE -->
+<section>
+  <div class="frame">
+    <div class="kicker">Solana Intelligent Summit</div>
+    <h1 class="title">Agentic Finance</h1>
+    <div class="byline"><div class="who">Ash Nouruzi</div><div class="role">Senior Developer Advocate</div></div>
+  </div>
+  <aside class="notes">Hi, I'm Ash, Senior Developer Advocate at Coinbase. Quick note: none of this is financial advice, and a lot of these services depend on where you live. That's the only caveat you'll hear from me.</aside>
+</section>
+
+<!-- 12 · DEMO -->
+<section data-background-video="../demos/draft-v6.mp4" data-background-video-muted data-background-size="cover" data-background-color="#fff">
+  <aside class="notes">Let me show you what that looks like. (The reel plays.)</aside>
+</section>
+
+<!-- 2 · AGENTS ARE THE NEW FRONT DOOR -->
+<section>
+  <div class="headline sm">For thirty years, the browser was the front door to the internet.</div>
+  <div class="door">
+    <div class="node"><div class="tile lg"><svg><use href="#i-user"/></svg></div><div class="lab">you</div></div>
+    <div class="arrow">→</div>
+    <div class="node" style="position:relative;">
+      <div class="tile lg"><svg><use href="#i-browser"/></svg></div>
+      <div class="tile lg blue fragment" data-fragment-index="1" style="position:absolute; top:0; left:0;"><svg><use href="#i-agent"/></svg></div>
+      <div class="lab"><span class="fragment fade-out" data-fragment-index="1" style="display:inline-block">browser</span><span class="fragment" data-fragment-index="1" style="position:absolute; left:0; right:0;">agent</span></div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="world">
+      <div class="tile"><svg><use href="#i-search"/></svg></div><div class="tile"><svg><use href="#i-chart"/></svg></div><div class="tile"><svg><use href="#i-image"/></svg></div><div class="tile"><svg><use href="#i-letter"/></svg></div>
+      <div class="tile"><svg><use href="#i-sim"/></svg></div><div class="tile"><svg><use href="#i-bank"/></svg></div><div class="tile"><svg><use href="#i-cal"/></svg></div><div class="tile"><svg><use href="#i-layers"/></svg></div>
+    </div>
+  </div>
+  <div class="headline sm accent fragment fade-up" data-fragment-index="1" style="margin-top:40px;">Agents are changing that.</div>
+  <aside class="notes">For thirty years the browser was the front door to the internet. [click] Agents are changing that.</aside>
+</section>
+
+<!-- 2b · APIS NOT UI · PARKED (replaced by 2c/2d/2e below): remove data-visibility="hidden" to bring it back -->
+<section data-visibility="hidden">
+  <div class="headline sm">Agents don't need a UI<br>They need access to <span class="accent">APIs</span></div>
+  <p class="sub" style="margin-top:44px; font-size:1rem; max-width:34ch;">They don't look at ads, so ads can't pay for your site. <b>Micro-payments can.</b></p>
+  <aside class="notes">Agents don't need a UI. They need access to APIs. And that changes how you get paid. You can't monetize your site with advertising, because agents don't care about ads. But you can charge them micro-payments.</aside>
+</section>
+
+<!-- 2c · WHY PAY #1: AGENTS NEED APIS, APIS NEED ACCOUNTS -->
+<section>
+  <div class="headline sm">Agents don't need a UI.<br>They need <span class="accent">APIs</span>.</div>
+  <div class="apigate">
+    <div class="node"><div class="tile lg blue"><svg><use href="#i-agent"/></svg></div><div class="lab">your agent</div></div>
+    <div class="arrow">→</div>
+    <div class="steps">
+      <div class="gate"><svg><use href="#lu-user-plus"/></svg>Sign up</div>
+      <div class="gate"><svg><use href="#lu-mail"/></svg>Verify your email</div>
+      <div class="gate"><svg><use href="#lu-credit-card"/></svg>Add a card, pick a plan</div>
+      <div class="gate"><svg><use href="#lu-key-round"/></svg>Copy an API key</div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="node"><div class="tile lg"><svg><use href="#lu-plug"/></svg></div><div class="lab">the API</div></div>
+  </div>
+  <p class="sub" style="margin-top:44px; font-size:22px; max-width:none;">It talks to the site instead of clicking through it. <b>But most APIs want an account first.</b></p>
+  <aside class="notes">So if agents are the new front door, the first thing that changes is how they reach a site. An agent doesn't need a UI. It doesn't navigate the page, it talks to the site directly, through an API. And most APIs expect you to have an account first: sign up, verify your email, add a card, pick a plan, copy an API key. That's fine for a person doing it once. It doesn't work for an agent that wants to make one call to a service it found a minute ago.</aside>
+</section>
+
+<!-- 2d · WHY PAY #2: ADS PAY FOR THE FREE WEB, AGENTS DON'T SEE ADS -->
+<section>
+  <div class="headline sm" style="white-space:nowrap; max-width:none;">The free web is paid for by <span class="accent">your attention</span>.</div>
+  <div class="adsplit">
+    <div class="adpanel">
+      <div class="who"><div class="tile"><svg><use href="#i-user"/></svg></div>You visit the site</div>
+      <div class="page">
+        <div class="bar"><i></i><i></i><i></i></div>
+        <div class="body">
+          <div class="song"><div class="t">Guitar tabs</div><div class="s">the song you want to learn</div><div class="chords">Em · G · D · A</div><div class="lines"><i style="width:92%"></i><i style="width:70%"></i><i style="width:82%"></i></div></div>
+          <div class="ads"><div class="ad"><b>Pedal</b><small>$129</small></div><div class="ad"><b>Amp</b><small>$299</small></div><div class="ad"><b>Cable</b><small>$19</small></div></div>
+        </div>
+      </div>
+      <div class="verdict">you see the ads → <b>they pay for the page</b></div>
+    </div>
+    <div class="adpanel">
+      <div class="who"><div class="tile blue"><svg><use href="#i-agent"/></svg></div>Your agent fetches it</div>
+      <div class="reply">
+        <div class="q">How do I play this song?</div>
+        <div class="a">Here are the chords:<div class="chords">Em · G · D · A</div></div>
+        <div class="gone"><span>Pedal</span><span>Amp</span><span>Cable</span></div>
+      </div>
+      <div class="verdict">no ad views → <b style="color:var(--ink)">the creator pays for hosting</b></div>
+    </div>
+  </div>
+  <aside class="notes">The second thing that changes is how the web gets paid for. Most of the internet is paid for by ads. Someone creates the content, drives the traffic, and serves it for free, because advertisers sponsor it. Say I want to learn a new song on guitar. I go to a site that shows me the tabs for free, and down the side it's showing me a pedal, an amp, a cable. My attention pays for the content and the hosting. Now I stop going to the site. I just ask my agent for the chords. It goes to that same site and fetches them, but it doesn't get distracted by the ads, and it doesn't tell me about them. It just gives me the chords. So the ads don't get the eyeballs, the traffic can't be monetized, and the creator is left with the hosting bill.</aside>
+</section>
+
+<!-- 2e · ENTER x402: NO ACCOUNT + PAY PER CRAWL -->
+<section>
+  <div class="headline sm">That's where <span class="accent">x402</span> comes in.</div>
+  <div class="duo2">
+    <div class="tcard t-blue">
+      <svg class="ticon"><use href="#lu-key-round"/></svg>
+      <div class="tt">No account, no API key</div><div class="td">The agent pays for each request straight from its wallet.</div>
+      <div class="http"><div><span>sign up · API key</span><span>skipped</span></div><div><span>pay per call</span><span>$0.01</span></div></div>
+    </div>
+    <div class="tcard t-dark">
+      <svg class="ticon"><use href="#lu-server"/></svg>
+      <div class="tt">Pay per crawl</div><div class="td">The same page: free for people, a fraction of a cent for agents.</div>
+      <div class="http"><div><span>person → 200 OK</span><span>free</span></div><div><span>agent → 402</span><span>$0.001</span></div></div>
+    </div>
+  </div>
+  <div class="tfoot">Cloudflare and AWS already let sites charge AI crawlers per request</div>
+  <aside class="notes">Those are the two reasons agents need to be able to pay. And that's where x402 comes in. One: an agent can pay for a service without an account or an API key. It just pays for the request, from its wallet. Two: a site can charge per crawl. The same page stays free for a person, and an agent pays a tenth of a cent, or a hundredth, to fetch it. That's not hypothetical. Cloudflare launched pay per crawl in July 2025, and AWS WAF has a Monetize action that answers AI bots with an x402 payment request.
+  (Sources: Cloudflare, "Introducing pay per crawl", blog.cloudflare.com, July 1, 2025: HTTP 402 with a publisher-set price. AWS WAF AI traffic monetization: Monetize action returns an x402 402 on CloudFront; from AWS-sourced search results, re-check before quoting. Prices on the slide are illustrative.)</aside>
+</section>
+
+<!-- 3b · HOOK: services agents can pay for -->
+<section id="hook"><div class="frame">
+  <div class="wall" id="wall"></div>
+  <div class="hook-center">
+    <div class="headline sm">Agents can pay for <span class="accent">tools, data and services</span> without accounts or API keys.</div>
+  </div>
+  </div>
+  <aside class="notes">Agents can pay for tools, data and services, without accounts or API keys. Search that goes deeper than the built-in one, from Exa, Tavily, Parallel or You.com. Smart money flows, a real phone call, a letter in the mail. A few cents at a time. I wonder what happens when that becomes normal.</aside>
+</section>
+
+<!-- 3 · x402 -->
+<section>
+
+  <div class="x4">
+    <div class="actor" style="left:30px;"><div class="tile blue"><svg><use href="#i-agent"/></svg></div><div class="name">Agent</div></div>
+    <div class="actor" style="left:440px;"><div class="tile"><svg><use href="#i-server"/></svg></div><div class="name">Any API</div></div>
+    <div class="actor" style="left:850px;"><div class="tile"><svg><use href="#i-shield"/></svg></div><div class="name">Facilitator</div></div>
+    <div class="life" style="left:130px;"></div><div class="life" style="left:540px;"></div><div class="life" style="left:950px;"></div>
+
+    <div class="m r fragment" data-fragment-index="1" style="top:120px; left:140px; width:390px;"><i></i><span><b>1</b> Request</span></div>
+    <div class="m l fragment" data-fragment-index="2" style="top:160px; left:140px; width:390px;"><i></i><span><b>2</b> 402 Payment Required <em class="chip ink">$0.01 USDC</em></span></div>
+    <div class="m r fragment" data-fragment-index="3" style="top:200px; left:140px; width:390px;"><i></i><span><b>3</b> Retry with signed payment</span></div>
+    <div class="m r fragment" data-fragment-index="4" style="top:240px; left:550px; width:390px;"><i></i><span><b>4</b> Verify</span></div>
+    <div class="m l fragment" data-fragment-index="4" style="top:280px; left:550px; width:390px;"><i></i><span><b>5</b> Valid ✓</span></div>
+    <div class="box fragment" data-fragment-index="5" style="top:336px; left:470px;"><b>6</b> Do the work</div>
+    <div class="m r fragment" data-fragment-index="6" style="top:362px; left:550px; width:390px;"><i></i><span><b>7</b> Settle <em class="chip ink"><img src="assets/logos/solana.svg"> Solana</em></span></div>
+    <div class="m l fragment" data-fragment-index="6" style="top:402px; left:550px; width:390px;"><i></i><span><b>8</b> Settled ✓</span></div>
+    <div class="m l fragment" data-fragment-index="7" style="top:442px; left:140px; width:390px;"><i></i><span><b>9</b> 200 OK + the thing</span></div>
+  </div>
+  <aside class="notes">That's what x402 is. [click] An agent asks for something. [click] The server says 402, payment required, here's the price. [click] The agent signs a small USDC payment and asks again. [click] The server hands that payment to a facilitator, which checks it's valid. [click] The server does the work. [click] The facilitator settles the payment on Solana [click] and the agent gets what it asked for. HTTP has had a "payment required" code since the nineties. It mostly sat unused, until agents gave it a reason.</aside>
+</section>
+
+<!-- 4 · CONNECTORS -->
+<section>
+  <div class="headline">How about <span class="accent">connectors</span><br>and <span class="accent">plugins</span>?</div>
+  <p class="sub" style="font-size:1rem;">Great for the big apps. <b>x402 covers the long tail.</b></p>
+  <aside class="notes">How about connectors and plugins? They're great for the big apps. x402 covers the long tail, the thousands of services nobody will ever build a connector for.</aside>
+</section>
+
+<!-- 5 · WALLET VS 50 ACCOUNTS -->
+<section>
+  <div class="headline sm">Why a wallet might be simpler<br>than <span class="accent">fifty accounts</span></div>
+  <div class="quad">
+    <div class="tcard t-blue"><svg class="ticon"><use href="#lu-user-round-x"/></svg><div class="tt">No accounts</div><div class="td">Nobody signs up anywhere.</div></div>
+    <div class="tcard t-dark"><svg class="ticon"><use href="#lu-coins"/></svg><div class="tt">No stranded balances</div><div class="td">Small credit left in different accounts.</div></div>
+    <div class="tcard t-light"><svg class="ticon" style="color:#0052ff"><use href="#lu-shield-check"/></svg><div class="tt">Bounded risk</div><div class="td">Dedicated agent wallet with guardrails.</div></div>
+    <div class="tcard t-ink"><svg class="ticon"><use href="#lu-globe"/></svg><div class="tt">The long tail</div><div class="td">Open protocol. Anyone can list a service.</div></div>
+  </div>
+  <aside class="notes">Here's why I think a wallet might be simpler. No accounts: nobody has to sign up anywhere. No stranded balances: otherwise you end up with small credit left over in a bunch of different accounts. Bounded risk: give the agent its own dedicated wallet with defined caps. And the long tail: it's an open protocol, so anyone can list a service.</aside>
+</section>
+
+<!-- 7 · LADDER -->
+<section>
+  <div class="headline sm">What can an agent do with a wallet?</div>
+  <div class="trio">
+    <div class="flipcard stag" style="transition-delay:0.25s"><div class="flip-inner" style="transition-delay:0.00s">
+    <div class="tcard t-blue front">
+      <div class="tt">Work</div><div class="td">pays for tools and data</div>
+      <div class="tlogos"><span><img src="assets/logos/exa.png" alt="Exa"></span><span><img src="assets/logos/firecrawl.png" alt="Firecrawl"></span><span><img src="assets/logos/coingecko.png" alt="CoinGecko"></span><span><img src="assets/logos/browserbase.svg" alt="Browserbase"></span></div>
+    </div>
+    <div class="tcard t-blue back"><div class="tt">Spend</div></div>
+    </div></div>
+    <div class="flipcard stag" style="transition-delay:0.40s"><div class="flip-inner" style="transition-delay:0.15s">
+    <div class="tcard t-dark front">
+      <div class="tt">Shop</div><div class="td">gets things for you</div>
+      <div class="tlogos"><span><img src="assets/logos/travala.png" alt="Travala"></span><span><img src="assets/logos/shopify.svg" alt="Shopify"></span><span><img src="assets/logos/bitrefill.png" alt="Bitrefill"></span><span><img src="assets/logos/laso.png" alt="Laso"></span></div>
+    </div>
+    <div class="tcard t-dark back"><div class="tt">Earn</div></div>
+    </div></div>
+    <div class="flipcard stag" style="transition-delay:0.55s"><div class="flip-inner" style="transition-delay:0.30s">
+    <div class="tcard t-light front">
+      <div class="tt">Trade</div><div class="td">helps you manage money</div>
+      <div class="tlogos"><span><img src="assets/logos/bitcoin.svg"></span><span><svg><use href="#lu-chart-candlestick"/></svg></span><span><svg><use href="#lu-landmark"/></svg></span><span><svg><use href="#lu-calendar-days"/></svg></span></div>
+    </div>
+    <div class="tcard t-light back"><div class="tt">Grow</div></div>
+    </div></div>
+  </div>
+  <span class="fragment flip-trigger" data-fragment-index="1"></span>
+  <aside class="notes">So what can an agent actually do with a wallet? I think about it in three ways. It pays to get work done. It shops for you. And it helps you trade.</aside>
+</section>
+
+<!-- 7b · DISCOVERY: no predefined workflow; agent searches x402 marketplaces, picks services, builds the workflow -->
+<section>
+  <div class="kicker">No workflow written in advance</div>
+  <div class="headline sm" style="font-size:1.2rem; margin-top:4px; white-space:nowrap; max-width:none;">The agent finds the services, then builds the workflow</div>
+  <div class="disc">
+    <div class="dcol"><div class="dh">The task</div>
+      <div class="task"><div class="tile blue"><svg><use href="#i-agent"/></svg></div><div class="bub">Find 3 Rust engineers who've shipped on Solana, and reach out</div></div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="dcol"><div class="dh">Searches x402 marketplaces</div>
+      <div class="dirs">
+        <div class="q"><svg><use href="#lu-search"/></svg>people search, email, mail…</div>
+        <div class="d"><img src="assets/logos/paysh.svg" alt="pay.sh"><div><b>pay.sh</b> <small>by Solana Foundation</small></div></div>
+        <div class="d"><img src="assets/logos/coinbase.svg" alt="Coinbase"><div><b>Bazaar</b> <small>by Coinbase</small></div></div>
+        <div class="d"><img src="assets/logos/agentcash.svg" alt="AgentCash" style="transform:scale(2.4);"><div><b>AgentCash</b> <small>by Merit</small></div></div>
+      </div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="dcol"><div class="dh">Picks what fits</div>
+      <div class="picks">
+        <div class="tile"><img src="assets/logos/exa.png" alt="Exa"></div><div class="tile"><img src="assets/logos/firecrawl.png" alt="Firecrawl"></div><div class="tile"><img src="assets/logos/apollo.png" alt="Apollo"></div><div class="tile"><img src="assets/logos/browserbase.svg" alt="Browserbase"></div>
+        <div class="tile"><img src="assets/logos/hunter.png" alt="Hunter"></div><div class="tile"><img src="assets/logos/contactout.png" alt="ContactOut"></div><div class="tile"><img src="assets/logos/agentmail.png" alt="AgentMail"></div><div class="tile"><img src="assets/logos/mailpulse.svg" alt="MailPulse"></div>
+      </div>
+      <div class="note">8 services · 0 accounts</div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="dcol"><div class="dh">Builds the workflow</div>
+      <div class="wsteps"><span>find</span><i>↓</i><span>drill down</span><i>↓</i><span>contacts</span><i>↓</i><span>verify</span><i>↓</i><span>reach out</span></div>
+    </div>
+  </div>
+  <aside class="notes">Here's the part I find most interesting. Nobody wrote this workflow in advance. I give the agent a task: find three Rust engineers who've shipped on Solana, and reach out. It doesn't have a list of integrations. It searches the x402 marketplaces, directories of services that agents can pay for: pay.sh by the Solana Foundation, Bazaar by Coinbase, AgentCash by Merit. It looks for what the task needs: people search, contact details, a way to send a message. It picks the services that fit. And then it puts them together into a workflow of its own. Here's what that looked like.</aside>
+</section>
+
+<!-- 8 · RUNG 1: WORK (talent finding) -->
+<section class="sum-slide">
+  <div class="kicker">Find 3 Rust engineers who've shipped on Solana, and reach out</div>
+  <div class="flowd has-loop">
+    <div class="col"><div class="ch">&nbsp;</div>
+      <div class="node user"><svg><use href="#i-person"/></svg></div>
+      <div class="agentbox"><div class="tile blue"><svg><use href="#i-agent"/></svg></div><span class="chip ink"><svg style="width:11px;height:11px;vertical-align:-2px"><use href="#i-wallet"/></svg> 1 wallet</span></div>
+    </div>
+    <div class="link on"></div>
+    <div class="col" data-loop="to"><div class="ch">Find</div>
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <div class="node"><div class="tile"><img src="assets/logos/exa.png" alt="Exa"></div><span class="chip">$0.01</span></div>
+        <div class="node"><div class="tile"><img src="assets/logos/firecrawl.png" alt="Firecrawl"></div><span class="chip">$0.025</span></div>
+        <div class="node"><div class="tile"><span style="width:34px;height:34px;border-radius:8px;background:#F8D35E;display:grid;place-items:center;"><img src="assets/logos/apollo.png" alt="Apollo" style="width:24px;height:24px;margin:0;"></span></div><span class="chip">$0.002</span></div>
+      </div>
+    </div>
+    <div class="link"></div>
+    <div class="col"><div class="ch">Candidates</div>
+      <div class="people"><svg><use href="#i-person"/></svg><svg><use href="#i-person"/></svg><svg><use href="#i-person"/></svg></div>
+    </div>
+    <div class="link"></div>
+    <div class="col" data-loop="from"><div class="ch">Drill down</div>
+      <div class="hbox">
+        <div class="hb-h"><img src="assets/logos/browserbase.svg" alt="">headless browser</div>
+        <div class="hb-grid">
+          <div class="tile"><img src="assets/logos/github.svg" alt="GitHub"></div>
+          <div class="tile"><img src="assets/logos/linkedin.svg" alt="LinkedIn"></div>
+          <div class="tile"><img src="assets/logos/x.svg" alt="X"></div>
+          <div class="tile"><svg><use href="#i-file"/></svg></div>
+        </div>
+      </div>
+      <span class="chip">$0.10 / session</span>
+    </div>
+    <div class="link"></div>
+    <div class="col"><div class="ch">Contacts</div>
+      <div class="node"><div class="tile"><img src="assets/logos/hunter.png" alt="Hunter"></div><span class="chip">$0.013</span></div>
+      <div class="node"><div class="tile"><img src="assets/logos/contactout.png" alt="ContactOut"></div><span class="chip">$0.33</span></div>
+    </div>
+    <div class="link"></div>
+    <div class="col"><div class="ch">Verify</div>
+      <div class="node"><div class="tile"><svg><use href="#i-mailok"/></svg></div><span class="chip">$0.002</span></div>
+      <div class="node"><div class="tile"><svg><use href="#i-phone"/></svg></div><span class="chip">$0.0045</span></div>
+      <div class="node"><div class="tile"><svg><use href="#i-home"/></svg></div><span class="chip">$0.002</span></div>
+    </div>
+    <div class="link"></div>
+    <div class="col"><div class="ch">Reach out</div>
+      <div class="node"><div class="tile"><img src="assets/logos/agentmail.png"></div><span class="chip">$2.00</span></div>
+      <div class="node"><div class="tile"><img src="assets/logos/mailpulse.svg"></div><span class="chip">$3.00</span></div>
+    </div>
+    <svg class="loop" aria-hidden="true"><defs><marker id="loop-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0052ff"/></marker></defs><path class="lp" marker-end="url(#loop-arrow)"/><text class="lt">not a fit? search again</text></svg>
+  </div>
+  <div class="tally" style="margin-top:86px;">
+    <span class="total"><b>$5–8</b> for finding your next hire · no need for <b>10 accounts</b></span>
+  </div>
+  <aside class="notes">Say I want to find three senior Rust engineers in Berlin who've shipped Solana programs, and reach out to them. My agent searches the web and people databases. It drills into GitHub, LinkedIn, X and their CV. If they aren't a fit, it goes back and searches again, until it has good candidates. It finds contact details and checks they're real. Then it writes each person a note made for them, and if it found an address, it mails them a letter. About five to eight dollars for finding your next hire. I wonder how many tasks never get done just because the setup is bigger than the task.
+  (Prices: live Solana 402 quotes 2026-11-07, per call. Drill down: Browserbase headless browser via StableBrowser, $0.10 per session (x402, checked 2026-11-13); Browser Use x402 is metered instead, about $0.00017/min plus $0.002–$0.10 per agent step. Contacts/verify run per candidate. Total ≈ $7.30 for 3 candidates + inbox + one letter. Sources: demos/rung1-hiring-workflow.md)</aside>
+</section>
+
+<!-- 8b · SPECULATIVE: BIDDING FOR ATTENTION · PARKED (hidden for now): remove data-visibility="hidden" to bring it back -->
+<section class="sum-slide" data-visibility="hidden">
+  <div class="kicker">Bidding for attention</div>
+  <div class="headline sm" style="font-size:1.2rem; margin-top:4px; white-space:nowrap; max-width:none;">An agent with a budget does the media buyer's job</div>
+  <div class="flowd" style="margin-top:34px;">
+    <div class="col"><div class="ch">Promote this</div>
+      <div class="node user"><svg><use href="#i-person"/></svg></div>
+      <div class="agentbox"><div class="tile blue"><svg><use href="#i-agent"/></svg></div><span class="chip ink"><svg style="width:11px;height:11px;vertical-align:-2px"><use href="#i-wallet"/></svg> $500 budget</span></div>
+    </div>
+    <div class="link on"></div>
+    <div class="col"><div class="ch">Read the site</div>
+      <div class="node"><div class="tile"><img src="assets/logos/firecrawl.png" alt="Firecrawl"></div><span class="chip">$0.025</span><span class="cap2">content</span></div>
+      <div class="node"><div class="tile"><svg><use href="#i-file"/></svg></div><span class="chip">$0.01</span><span class="cap2">audience</span></div>
+    </div>
+    <div class="link"></div>
+    <div class="col"><div class="ch">Good fit?</div>
+      <div class="node"><div class="tile"><svg><use href="#lu-target"/></svg></div><span class="chip solid">relevant ✓</span></div>
+    </div>
+    <div class="link"></div>
+    <div class="col"><div class="ch">Traffic</div>
+      <div class="node"><div class="tile"><svg><use href="#lu-users"/></svg></div><span class="chip">$0.05</span><span class="cap2">visitors</span></div>
+      <div class="node"><div class="tile"><svg><use href="#lu-map-pin"/></svg></div><span class="chip">$0.05</span><span class="cap2">geography</span></div>
+    </div>
+    <div class="link"></div>
+    <div class="col"><div class="ch">Price it</div>
+      <div class="node"><div class="tile"><svg><use href="#lu-gavel"/></svg></div><span class="chip solid">bid $180</span><span class="cap2">40k / mo · 70% US</span></div>
+    </div>
+    <div class="link"></div>
+    <div class="col"><div class="ch">Place it</div>
+      <div class="node"><div class="tile"><svg><use href="#lu-ad-slot"/></svg></div><span class="cap2">ad slot</span></div>
+      <div class="node"><div class="tile"><svg><use href="#lu-megaphone"/></svg></div><span class="cap2">sponsored page</span></div>
+      <div class="node"><div class="tile"><svg><use href="#lu-mic"/></svg></div><span class="cap2">podcast read</span></div>
+    </div>
+  </div>
+  <div class="tally">
+    <span class="total">pays for the data it needs with <b>x402</b> · then spends the budget where it fits</span>
+  </div>
+  <aside class="notes">Here's where I think this could go. This part is speculative. Say I give an agent a budget and ask it to promote something. It crawls a site to understand what the content is and who reads it. It decides whether that audience fits what it's promoting. If it does, it pays for traffic data: how many visitors, and where they're coming from. From that it works out a price, and bids on the slot. Then it places it: an ad slot, a sponsored page, or even a podcast where the host talks about the product. Every piece of data along the way is a small x402 payment. It's doing what a media buyer would have done, with a budget and a bit of reasoning. I wonder who builds the other side of that, the sites and shows that take bids from agents.
+  (Illustrative: traffic-data prices, the bid and the traffic numbers are made up for the example. Firecrawl price from the rung 1 quotes.)</aside>
+</section>
+
+<!-- 9 · RUNG 2: BUY · PARKED (hidden for now): remove data-visibility="hidden" to bring it back -->
+<section data-visibility="hidden">
+  <div class="kicker">02 · Shop <span class="muted">· a trip planner that shops for you</span></div>
+  <div class="headline sm" style="font-size:1.2rem; margin-top:4px; white-space:nowrap; max-width:none;">Plan a trip or shop</div>
+  <div class="lanes">
+    <div class="lane"><div class="lh"><svg><use href="#lu-plane"/></svg>Plan a trip</div><div class="pills"><div class="pill" style="transition-delay:0.25s"><div class="tile"><img src="assets/logos/travala.png" alt="Travala · paid in USDC"></div><div class="t"><b>Hotel in Lisbon</b><small>Travala</small></div></div><div class="pill" style="transition-delay:0.40s"><div class="tile"><img src="assets/logos/bitrefill.png" alt="Bitrefill"></div><div class="t"><b>Europe eSIM</b><small>Bitrefill</small></div></div><div class="pill" style="transition-delay:0.55s"><div class="tile"><img src="assets/logos/agentres.svg" alt="Agent Restaurant Reservation API"></div><div class="t"><b>Book a table</b><small>AgentRes</small></div></div><div class="pill" style="transition-delay:0.62s"><div class="tile"><svg style="width:26px;height:26px;color:var(--ink)"><use href="#lu-map-pinned"/></svg></div><div class="t"><b>Book a tour</b><small>StableTravel</small></div></div><div class="pill" style="transition-delay:0.70s"><div class="tile"><img src="assets/logos/laso.png" alt="Laso · load $5–$10k"></div><div class="t"><b>Prepaid card</b><small>Laso</small></div></div></div></div>
+    <div class="lane"><div class="lh"><svg><use href="#lu-shirt"/></svg>Shop</div><div class="pills"><div class="pill" style="transition-delay:0.85s"><div class="tile"><img src="assets/logos/shopify.svg" alt="Shopify catalog"></div><div class="t"><b>Rain jacket</b><small>Shopify</small></div></div><div class="pill" style="transition-delay:1.00s"><div class="tile"><img src="assets/logos/printful.png" alt="Printful"></div><div class="t"><b>Custom hoodie from a prompt</b><small>Printful</small></div></div><div class="pill" style="transition-delay:1.15s"><div class="tile"><img src="assets/logos/purch.png" alt="Purch"></div><div class="t"><b>Charger adapter</b><small>Purch</small></div></div></div></div>
+  </div>
+  <div class="tally rtally" style="margin-top:44px;">
+    <span class="total">will grow as stablecoin adoption does</span>
+  </div>
+  <aside class="notes">Second rung: buying things for people. I built a trip planner that does this, and it asks me before every purchase. For the trip, it books a hotel in Lisbon through Travala, grabs a European eSIM from Bitrefill, books a table for dinner, books a tour, and loads a prepaid card for anything else. For shopping, it finds a rain jacket on Shopify, designs a hoodie from a one-line prompt and has Printful print and ship it, and buys a travel charger adapter through Purch. I wonder how fast that list grows as more places take stablecoins. Buying things for people is still early. I'm curious how it shakes out.
+  (Sources: Travala hotels MCP, x402 USDC; Bitrefill api.bitrefill.com/x402 (eSIM, invoice = product price); Agent Restaurant Reservation API agentres.dev/api/book ($0.01, x402 on Base + Solana); StableTravel stabletravel.dev/api/activities/search (Amadeus tours, $0.054, bookable); Laso laso.finance (prepaid card $5–10k); ShopScout shopscout.forgemesh.io $0.01 (Shopify search); AgentMerch agentmerch.xyz (prompt → Printful hoodie $59, ships worldwide); Purch api.purch.xyz (buy + ship Amazon/Shopify products, USDC).)</aside>
+</section>
+
+<!-- 9b · TRADING SETUP: research → define a basket → keep it rebalanced → DCA into it -->
+<section>
+  <div class="kicker">Now, trading</div>
+  <div class="headline sm" style="font-size:1.2rem; margin-top:4px; white-space:nowrap; max-width:none;">From research to a basket that looks after itself</div>
+  <div class="tline">
+    <div class="tl"><div class="dot"><svg><use href="#lu-search"/></svg></div><div class="t">Research</div><div class="h">Pays for data and tools with x402, and helps you make sense of it</div></div>
+    <div class="tl"><div class="dot"><svg><use href="#lu-shopping-basket"/></svg></div><div class="t">Define your basket</div><div class="h">A better way to express your view</div></div>
+    <div class="tl"><div class="dot"><svg><use href="#lu-scale"/></svg></div><div class="t">Keep it rebalanced</div><div class="h">Maintains it for you, week after week</div></div>
+    <div class="tl"><div class="dot on"><svg><use href="#lu-trending-up"/></svg></div><div class="t">DCA into it</div><div class="h">Handles the boring, repetitive buys, scaled to price</div></div>
+  </div>
+  <div class="plain2">No code. No custom bot. <b>Just plain English.</b></div>
+  <aside class="notes">Now let's look at trading. This is where I think agents help the most, and it's not about predicting prices. First, research: the agent pays for data and tools with x402, pulls a lot of it together, and helps you make sense of it. Second, it gives you a better way to express your view: you describe the basket you believe in. Third, it keeps that basket maintained, rebalancing when things drift. And fourth, it handles the boring, repetitive part, buying into it over time, dynamically. All of that without writing code or building a custom bot. Just plain English.</aside>
+</section>
+
+<!-- 10a · RUNG 3: RESEARCH BEFORE YOU BUY (work → trade) · workflow: ask → agent pays for data → brief -->
+<section>
+  <div class="kicker">Do the work, then trade</div>
+  <div class="headline sm" style="font-size:1.2rem; margin-top:4px; white-space:nowrap; max-width:none;">Research before you buy</div>
+  <div class="flowd rflow">
+    <div class="col"><div class="ch">You ask</div>
+      <div class="node user"><svg><use href="#i-person"/></svg></div>
+      <div class="askb">Research this token</div>
+    </div>
+    <div class="link on"></div>
+    <div class="col"><div class="ch">The agent checks</div>
+      <div class="srcs">
+        <div class="src"><img src="assets/logos/nansen.png" alt="Nansen"><div class="sm"><span class="sl">top traders</span><code>smart-money/netflow</code></div><b>$0.05</b></div>
+        <div class="src"><img src="assets/logos/arkm.png" alt="Arkham"><div class="sm"><span class="sl">big holders</span><code>intelligence/address</code></div><b>$0.20</b></div>
+        <div class="src"><img src="assets/logos/coingecko.png" alt="CoinGecko"><div class="sm"><span class="sl">liquidity</span><code>onchain/search/pools</code></div><b>$0.01</b></div>
+        <div class="src"><img src="assets/logos/glassnode.png" alt="Glassnode"><div class="sm"><span class="sl">mood</span><code>funding_rate_perpetual</code></div><b>$0.05</b></div>
+        <div class="src"><img src="assets/logos/messari.png" alt="Messari"><div class="sm"><span class="sl">social sentiment</span><code>signal/v1/assets/:id</code></div><b>$0.35</b></div>
+        <div class="stot"><span>5 calls · 0 accounts</span><b>$0.66</b></div>
+      </div>
+    </div>
+    <div class="link on"></div>
+    <div class="col"><div class="ch">You get</div>
+      <div class="brief">
+        <div class="bt">Token research brief</div>
+        <div class="row"><span class="k">top traders</span><span class="v">net buying this week</span></div>
+        <div class="row"><span class="k">big holders</span><span class="v">mostly funds and exchanges</span></div>
+        <div class="row"><span class="k">liquidity</span><span class="v">deep pools, easy in and out</span></div>
+        <div class="row"><span class="k">mood</span><span class="v">leverage rising, funding positive</span></div>
+        <div class="row"><span class="k">social</span><span class="v">upbeat, mindshare climbing</span></div>
+        <div class="verdict2">Strong demand, but leverage is high.</div>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">Before any bot, the simplest upgrade is doing your homework. Same idea as the work example: the agent pays for data, then you decide. Say I'm looking at a token. I ask my agent to research it, and it goes to work. It asks Nansen whether top traders are buying or selling. It asks Arkham who owns the biggest bags, a fund, an exchange or one person. It asks CoinGecko whether there's enough trading to get in and out easily. It asks Glassnode about the mood: are people holding it, or betting on it with leverage. And it asks Messari what people are saying about it: sentiment and mindshare across social. About sixty-six cents across five services, no accounts. What I get back isn't a pile of data, it's a short brief that helps me understand it, so I can make my own call.
+  (The findings in the brief are an illustrative example, not live data. (Prices: x402 quotes from the Coinbase x402 catalogue, per call. Nansen api.nansen.ai/api/v1, Arkham api.arkm.com/x402, CoinGecko pro-api.coingecko.com/api/v3/x402/onchain, Glassnode x402.glassnode.com/v1/metrics, Messari api.messari.io/signal/v1/assets/{asset} $0.35 (x402 on Base or Solana, checked 2026-11-13).)</aside>
+</section>
+
+<!-- 10 · RUNG 3: TRADE (rebalance a basket → dynamic DCA into it; hedge parked) -->
+<section>
+  <div class="kicker">Describe a bot in plain English</div>
+  <div class="stage">
+    <!-- C: rebalance a basket (kinda like your own ETF) -->
+    <div class="fragment fade-out" data-fragment-index="1" style="position:absolute; inset:0;">
+      <div class="headline sm" style="font-size:1.2rem; margin-top:10px; white-space:nowrap; max-width:none;">Define your own custom basket and keep it rebalanced</div>
+      <div class="bsk-sub">Kinda like your own custom ETF</div>
+      <div class="bsk">
+        <div class="rules">
+          <div class="rule"><div class="k">Your basket</div><div class="v">$10k in 4 coins</div></div>
+          <div class="rule"><div class="k">A month later</div><div class="v">SOL +40%, HYPE −20%</div></div>
+          <div class="rule"><div class="k">Every week</div><div class="v">Check how far each one drifted</div></div>
+          <div class="rule"><div class="k">Off by 5+ points?</div><div class="v">Sell what ran, buy what lagged</div></div>
+        </div>
+        <div class="bcard">
+          <div class="brow hd"><span>Coin</span><span>A month later</span><span>Agent does</span></div>
+          <div class="brow"><div class="a"><img src="assets/logos/bitcoin.svg" alt="BTC">BTC</div>
+            <div><div class="bar"><i style="width:74%"></i><b style="left:80%"></b></div><div class="pct"><span>target 40%</span><em>now 37%</em></div></div>
+            <span class="act">buy $280</span></div>
+          <div class="brow"><div class="a"><img src="assets/logos/solana.svg" alt="SOL">SOL</div>
+            <div><div class="bar"><i style="width:66%"></i><b style="left:50%"></b></div><div class="pct"><span>target 25%</span><em>now 33%</em></div></div>
+            <span class="act sell">sell $825</span></div>
+          <div class="brow"><div class="a"><img src="assets/logos/hyperliquid.jpg" alt="HYPE">HYPE</div>
+            <div><div class="bar"><i style="width:22%"></i><b style="left:30%"></b></div><div class="pct"><span>target 15%</span><em>now 11%</em></div></div>
+            <span class="act">buy $405</span></div>
+          <div class="brow"><div class="a"><img src="assets/logos/usdc.png" alt="USDC">USDC</div>
+            <div><div class="bar"><i style="width:38%"></i><b style="left:40%"></b></div><div class="pct"><span>target 20%</span><em>now 19%</em></div></div>
+            <span class="act">buy $140</span></div>
+        </div>
+      </div>
+    </div>
+    <!-- A: DCA -->
+    <div class="fragment" data-fragment-index="1" style="position:absolute; inset:0;">
+      <div class="headline sm" style="font-size:1.2rem; margin-top:10px; white-space:nowrap; max-width:none;">Then DCA into your basket, dynamically</div>
+      <div class="dca">
+        <div class="rules">
+          <div class="rule"><div class="k">Every week</div><div class="v">Base buy $50</div></div>
+          <div class="rule"><div class="k">The math</div><div class="v m">$50 × 7-day avg ÷ price</div></div>
+          <div class="rule"><div class="k">Always DCA</div><div class="v">Min $20 · max $100</div></div>
+        </div>
+        <svg class="curve" viewBox="0 0 560 334">
+          <line x1="70" y1="50" x2="550" y2="50" stroke="#e7e7ee"/><line x1="70" y1="170" x2="550" y2="170" stroke="#e7e7ee"/><line x1="70" y1="242" x2="550" y2="242" stroke="#e7e7ee"/>
+          <line x1="190" y1="30" x2="190" y2="270" stroke="#c9c9d3" stroke-dasharray="4 5"/>
+          <text x="60" y="55" text-anchor="end">$100</text><text x="60" y="175" text-anchor="end">$50</text><text x="60" y="247" text-anchor="end">$20</text>
+          <text x="90" y="292" text-anchor="middle">−50%</text><text x="190" y="292" text-anchor="middle">avg</text><text x="390" y="292" text-anchor="middle">+100%</text><text x="310" y="326" text-anchor="middle">price vs its 7-day avg</text>
+          <path d="M70,50.0 L74,50.0 L78,50.0 L82,50.0 L86,50.0 L90,50.0 L94,59.2 L98,67.8 L102,75.7 L106,83.1 L110,90.0 L114,96.5 L118,102.5 L122,108.2 L126,113.5 L130,118.6 L134,123.3 L138,127.8 L142,132.1 L146,136.2 L150,140.0 L154,143.7 L158,147.1 L162,150.5 L166,153.6 L170,156.7 L174,159.6 L178,162.3 L182,165.0 L186,167.6 L190,170.0 L194,172.4 L198,174.6 L202,176.8 L206,178.9 L210,180.9 L214,182.9 L218,184.7 L222,186.6 L226,188.3 L230,190.0 L234,191.6 L238,193.2 L242,194.8 L246,196.2 L250,197.7 L254,199.1 L258,200.4 L262,201.8 L266,203.0 L270,204.3 L274,205.5 L278,206.7 L282,207.8 L286,208.9 L290,210.0 L294,211.1 L298,212.1 L302,213.1 L306,214.1 L310,215.0 L314,215.9 L318,216.8 L322,217.7 L326,218.6 L330,219.4 L334,220.2 L338,221.0 L342,221.8 L346,222.6 L350,223.3 L354,224.1 L358,224.8 L362,225.5 L366,226.2 L370,226.8 L374,227.5 L378,228.1 L382,228.8 L386,229.4 L390,230.0 L394,230.6 L398,231.2 L402,231.7 L406,232.3 L410,232.9 L414,233.4 L418,233.9 L422,234.4 L426,235.0 L430,235.5 L434,235.9 L438,236.4 L442,236.9 L446,237.4 L450,237.8 L454,238.3 L458,238.7 L462,239.2 L466,239.6 L470,240.0 L474,240.4 L478,240.8 L482,241.2 L486,241.6 L490,242.0 L494,242.0 L498,242.0 L502,242.0 L506,242.0 L510,242.0 L514,242.0 L518,242.0 L522,242.0 L526,242.0 L530,242.0 L534,242.0 L538,242.0 L542,242.0 L546,242.0 L550,242.0" fill="none" stroke="#0052ff" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+          <circle cx="90" cy="50" r="7" fill="#0052ff"/><circle cx="190" cy="170" r="7" fill="#0052ff"/><circle cx="390" cy="230" r="7" fill="#0052ff"/>
+          <text class="pt" x="106" y="38">buy $100</text><text class="pt" x="202" y="160">buy $50</text><text class="pt" x="390" y="214" text-anchor="middle">buy $25</text>
+        </svg>
+      </div>
+      <div class="dca-qr"><div class="card-qr"><img class="qr" src="assets/qr-dca.svg" alt="QR code for github.com/Must-be-Ash/dynamic-dca"></div><div class="label">Grab the skill</div></div>
+    </div>
+    <!-- PARKED (hidden for now): hedge step. To bring it back, move it out of this <template>, give it a fragment index,
+         and put its notes below back into the aside. -->
+    <template data-parked="hedge">
+    <!-- B: reduce exposure -->
+    <div class="fragment fade-in-then-out" data-fragment-index="1" style="position:absolute; inset:0;">
+      <div class="headline sm" style="font-size:1.2rem; margin-top:10px; white-space:nowrap; max-width:none;">Hedge: reduce exposure, keep your coins</div>
+      <div class="dca">
+        <div class="rules">
+          <div class="rule"><div class="k">You hold</div><div class="v s">1 BTC (say $100k), Fed next week</div></div>
+          <div class="rule"><div class="k">You tell the agent</div><div class="v s">"Hedge 40% until after the Fed"</div></div>
+          <div class="rule"><div class="k">The agent</div><div class="v s">Shorts 0.4 BTC perp, closes Dec 10</div></div>
+        </div>
+        <svg class="curve" viewBox="0 0 560 334">
+          <rect x="70" y="6" width="14" height="14" rx="3" fill="#d4d4dc"/><text class="lg" x="92" y="18">no hedge</text>
+          <rect x="250" y="6" width="14" height="14" rx="3" fill="#0052ff"/><text class="lg" x="272" y="18">with the 40% hedge</text>
+          <line x1="40" y1="170" x2="550" y2="170" stroke="#c9c9d3"/>
+          <rect x="130" y="170" width="60" height="110" rx="6" fill="#d4d4dc"/><rect x="200" y="170" width="60" height="66" rx="6" fill="#0052ff"/>
+          <text class="val" x="160" y="300" text-anchor="middle">−$10k</text><text class="val" x="230" y="256" text-anchor="middle">−$6k</text>
+          <rect x="340" y="60" width="60" height="110" rx="6" fill="#d4d4dc"/><rect x="410" y="104" width="60" height="66" rx="6" fill="#0052ff"/>
+          <text class="val" x="370" y="50" text-anchor="middle">+$10k</text><text class="val" x="440" y="94" text-anchor="middle">+$6k</text>
+          <text x="195" y="150" text-anchor="middle">if BTC drops 10%</text><text x="405" y="196" text-anchor="middle">if BTC rises 10%</text>
+          <text class="ax" x="300" y="330" text-anchor="middle">what you gain or lose</text>
+        </svg>
+      </div>
+    </div>
+    <!-- parked notes:
+  [click] Say you hold one bitcoin, there's a Fed meeting coming, and you're nervous, but you don't want to sell. You tell the agent: hedge forty percent until after the Fed. It checks the calendar, asks you, then shorts 0.4 bitcoin on a Solana perp. You keep your coins. If bitcoin drops ten percent, your stack only drops six. The day after the meeting, it closes the short.
+    -->
+    </template>
+  </div>
+  <aside class="notes">Then you can go further and hand it the trade itself. It used to take a quant dev to build a bot. Now you can describe one in plain English. Pick a basket and let the agent keep it on target. Kinda like your own custom ETF. Forty percent bitcoin, twenty-five SOL, fifteen HYPE, twenty in dollars. Every week the agent checks how far each one has drifted. If SOL ran and HYPE dipped, it trims SOL and tops up the rest, back to target. Funds charge a fee every year to do exactly this. I wonder how many people would rather just describe their own.
+  [click] Then, to build into that basket, my first bot was a dynamic DCA skill. Every week it starts from a base, say fifty dollars, and scales it by the seven-day average over today's price. Price halves, it buys a hundred. Price doubles, it buys twenty-five. And the DCA never stops: the minimum buy stays at twenty, the max at a hundred. The skill's on GitHub if you want it.
+  Now, a reality check. On Polymarket, fourteen of the top twenty traders are bots. But when frontier models were handed real money to trade in Alpha Arena, most of them lost between forty and fifty-eight percent. So agents don't give you a crystal ball. They're cheap, smart employees that never sleep. Which is why the agents I like best are the boring ones: they check a number every day, and they ask before they act.</aside>
+</section>
+
+<!-- 6 · WHY SOLANA -->
+<section>
+  <div class="kicker"><img src="assets/logos/solana.svg" style="width:14px;height:14px;vertical-align:-2px;margin:0 6px 0 0;display:inline;"> Why Solana</div>
+  <div class="headline">A lot of this is happening<br><span class="accent">on Solana</span></div>
+  <div style="margin-top:56px;">
+    <div class="kicker" style="margin-bottom:14px;"><span class="muted">x402 Foundation members include</span></div>
+    <div class="pills sol-pills"><span class="pill">Coinbase</span><span class="pill">Cloudflare</span><span class="pill">Visa</span><span class="pill">Mastercard</span><span class="pill">Stripe</span><span class="pill">Google</span><span class="pill">AWS</span><span class="pill">Shopify</span><span class="pill">Solana Foundation</span></div>
+  </div>
+  <aside class="notes">And why Solana? A lot of this is happening on Solana today. And look at who's in the x402 Foundation: Coinbase, Cloudflare, Visa, Mastercard, Stripe, Google, AWS, Shopify, the Solana Foundation. Interesting who's showing up.</aside>
+</section>
+
+<!-- 13 · THANKS -->
+<section>
+  <div class="thanks">
+    <div class="thead">
+      <img class="cb-word" src="assets/logos/coinbase-wordmark.svg" alt="Coinbase">
+      <div class="who">Ash Nouruzi</div><div class="role">Senior Developer Advocate</div>
+    </div>
+    <div class="ctas">
+      <div class="cta"><div class="card-qr"><img class="qr" src="assets/qr-x402.svg" alt="QR code for docs.cdp.coinbase.com/x402/welcome"></div><div class="label">Start building with x402</div></div>
+      <div class="cta"><div class="card-qr"><img class="qr" src="assets/qr-coinbase-mcp.svg" alt="QR code for docs.cdp.coinbase.com/ai-agents/coinbase-for-agents/coinbase-mcp"></div><div class="label">Start trading with agents</div></div>
+      <div class="cta"><div class="card-qr"><img class="qr" src="assets/qr-x.svg" alt="QR code for x.com/Must_be_Ash"></div><div class="label">Find me on X</div></div>
+    </div>
+  </div>
+  <aside class="notes">Thank you. (Coinbase plug: say a word about Coinbase and what we're building for agents.) If you want to start building with x402, the code on the left takes you to the docs. The one in the middle is the Coinbase MCP, if you want to start trading with agents. And the one on the right is me on X, if you want to keep talking.</aside>
+</section>
+
+</div></div>
+    <div class="card fragment fade-up" style="width:200px;"><div class="metric" style="font-size:3.2rem;">0</div><div class="c-role">accounts</div></div>
+    <div class="card fragment fade-up" style="width:200px;"><div class="metric" style="font-size:3.2rem;">1</div><div class="c-role">wallet</div></div>
+    <div class="card fragment fade-up" style="width:200px;"><div class="glyph" style="width:80px;height:80px;margin:6px 0;"><svg style="width:36px;height:36px"><use href="#i-shield"/></svg></div><div class="c-role">a hard cap</div></div>
+  </div>
+  <aside class="notes">Eight services. Zero accounts. One wallet. About four dollars sixty in fees. And a hard cap on how much it could ever spend. (Provisional from motion-f8: Exa, fal, Zinc, TTS, phone call, MailPulse, Treasury curve, basis = $4.61 + item price.)</aside>
+</section>
+
+<!-- 14 · CLOSE -->
+<section>
+  <div class="headline sm">If agents become the front door, the world becomes an API, and the agent needs a way to pay for it.</div>
+  <div class="headline fragment fade-up" style="margin-top:46px; font-size:1.7rem;">I wonder what you'd build if your agent had <span class="grad">a small wallet and a clear budget</span>.</div>
+  <div class="fine fragment">x402.org · docs.cdp.coinbase.com/x402 · pay.sh</div>
+  <aside class="notes">So that's what I keep thinking about. If agents become the front door, the world becomes an API, and the agent needs a way to pay for it. I don't know exactly what that looks like in five years. [click] But I wonder what you'd build if your agent had a small wallet and a clear budget. I'd love to see it. Thank you.</aside>
+</section>
+
+</div></div>
+
+<script src="vendor/reveal.js"></script>
+<script src="vendor/notes.js"></script>
+<script>
+  // Hook chip wall: real Solana x402 prices from our research
+  const items = [
+    ['assets/logos/exa.png','Exa search','$0.01'], ['assets/logos/nansen.png','smart money flows','$0.05'],
+    ['assets/logos/tavily.png','Tavily search','$0.01'], ['assets/logos/mailpulse.svg','mailed letter','$3.00'],
+    ['assets/logos/glassnode.png','funding rates','$0.05'], ['assets/logos/pdl.png','person enrich','$0.28'],
+    ['assets/logos/parallel.png','Parallel search','$0.01'], ['assets/logos/stablephone.png','AI phone call','$0.54'],
+    ['assets/logos/hunter.png','email finder','$0.013'], ['assets/logos/agentmail.png','agent inbox','$2.00'],
+    ['assets/logos/fal.png','image generation','$0.01'], ['assets/logos/arkm.png','wallet intel','$0.20'],
+    ['assets/logos/you.png','You.com research','$0.15'], ['assets/logos/browserbase.svg','cloud browser','$0.01'],
+    ['assets/logos/whitepages.png','phone lookup','$0.22'], ['assets/logos/contactout.png','direct contact','$0.33'],
+  ];
+  const spots = [[60,70],[380,40],[820,60],[1010,150],[90,230],[1040,300],[70,420],[1000,470],
+                 [150,600],[430,640],[760,630],[990,610],[300,150],[850,200],[260,520],[820,520]];
+  const wall = document.getElementById('wall');
+  if (wall) items.forEach(([icon,label,price],i)=>{
+    const d=document.createElement('div'); d.className='fly';
+    d.style.left=(spots[i][0]+40)+'px'; d.style.top=(20+spots[i][1]*0.86)+'px'; d.style.transitionDelay=(0.2+i*0.18)+'s';
+    const t = icon.startsWith('#') ? `<svg><use href="${icon}"/></svg>` : `<img src="${icon}">`;
+    d.innerHTML=`<div class="tile">${t}</div><span>${label}</span><span class="chip">${price}</span>`;
+    wall.appendChild(d);
+  });
+
+  // draw the drill-down → find loop under the work diagram, from the columns' real positions
+  function drawLoops() {
+    document.querySelectorAll('.flowd.has-loop').forEach(fd => {
+      const from = fd.querySelector('[data-loop="from"]'), to = fd.querySelector('[data-loop="to"]');
+      const path = fd.querySelector('.loop .lp'), label = fd.querySelector('.loop .lt');
+      if (!from || !to || !fd.offsetHeight) return;
+      const x1 = from.offsetLeft + from.offsetWidth / 2, y1 = from.offsetTop + from.offsetHeight + 6;
+      const x0 = to.offsetLeft + to.offsetWidth / 2,   y0 = to.offsetTop + to.offsetHeight + 6;
+      const yL = Math.max(y0, y1) + 26, r = 14;
+      path.setAttribute('d', `M${x1},${y1} V${yL - r} Q${x1},${yL} ${x1 - r},${yL} H${x0 + r} Q${x0},${yL} ${x0},${yL - r} V${y0 + 4}`);
+      label.setAttribute('x', (x0 + x1) / 2); label.setAttribute('y', yL + 16);
+    });
+  }
+  Reveal.on('ready', drawLoops); Reveal.on('slidechanged', drawLoops); Reveal.on('resize', drawLoops);
+  document.fonts && document.fonts.ready.then(drawLoops);
+
+  Reveal.initialize({
+    width: 1280, height: 720, margin: 0.04,
+    hash: true, center: true, controls: false, progress: true, slideNumber: false,
+    transition: 'fade', transitionSpeed: 'default',
+    autoAnimateEasing: 'cubic-bezier(0.22, 1, 0.36, 1)', autoAnimateDuration: 0.7,
+    plugins: [RevealNotes],
+  });
+</script>
+</body>
+</html>

@@ -53,6 +53,7 @@ for the full voice, design system, slide arc, motion vocabulary, and checklist.
 | `SKILL.md` | Skill definition + step-by-step workflow |
 | `assets/template.html` | Pre-wired Reveal.js deck (design-system CSS, components, worked examples per beat) |
 | `reference/design-and-arc.md` | Voice, design system, slide arc, motion, alignment discipline, brand fonts, checklist |
+| `examples/solana-intelligent-summit/` | Worked example: the full "Agentic Finance" talk from the Solana Intelligent Summit, with assets and speaker notes |
 | `concept-slideshow-guide.md` | The **minimal static** fallback: a no-animation, no-dependency deck template + the same voice/design principles |
 
 There are two build paths: the **animated** skill (default for launches) and the **minimal

@@ -33,6 +33,8 @@ the minimal deck, but with designed components and motion.
 3. **Read the reference:** `reference/design-and-arc.md` — voice, design system, the arc
    (benefit-first *promise → proof* pairs, explainer slides, grouping), motion, components,
    alignment discipline, brand fonts. It is the source of truth for *what* goes on each slide.
+   Then skim the worked example `examples/solana-intelligent-summit/index.html` (a full public
+   conference talk built with this skill) for pacing, explainer slides, motion, and speaker notes.
 4. **Copy the template:** `assets/template.html` into the user's target path (ask where, or default
    to cwd as `<concept>-deck.html`). It's pre-wired with Reveal.js, the design-system CSS, the
    battle-tested components (cards, before/after code that never clips, explainer slides, flow,
